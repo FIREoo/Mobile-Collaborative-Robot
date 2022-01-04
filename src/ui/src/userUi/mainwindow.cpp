@@ -35,6 +35,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 // mine
 #include "myThreadHandle.h"
+#include "subclass.h"
 #include <robot_vision/RotationTools.h>
 
 
@@ -401,6 +402,7 @@ void MainWindow::TM_pos_Callback(const tm_msgs::FeedbackState::ConstPtr &msg)
         ROS_ERROR_STREAM("Error get TM pos callback");
     }
 }
+
 
 void MainWindow::on_btn_getImage_upperCamera1_clicked()
 {
@@ -883,14 +885,13 @@ void MainWindow::sendCMD(std::string cmd, bool print /*= true*/)
         srv.request.script = cmd;
         if (client.call(srv))
         {
-            ROS_INFO_STREAM("Sent script to robot:" + cmd);
-            // if (srv.response.ok)
-            // {
-            //     if (print)
-            //     ROS_INFO_STREAM("Sent script to robot:" + cmd);
-            // }
-            // else
-            //     ROS_WARN_STREAM("Sent script to robot , but response not yet ok ");
+            if (srv.response.ok)
+            {
+                if (print)
+                    ROS_INFO_STREAM("Sent script to robot:" + cmd);
+            }
+            else
+                ROS_WARN_STREAM("Sent script to robot , but response not yet ok ");
         }
         else
         {
@@ -1872,8 +1873,9 @@ void MainWindow::on_pushButton_ros_spin_clicked()
 #define C0 "\033[0m"
 void MainWindow::on_pushButton_test1_clicked()
 {
+    TmTcp tcp(10, 10, 10, 3, 3, 3, "mm", "deg");
+    ROS_INFO("%s", tcp.ToCmdString().c_str());
 
-    ROS_INFO("%saaa%s", C1, C0);
     // ROS_INFO_STREAM(C1 + "bbb" + C0);
     // string str = "給我一腳給我";
     // string find = "一腳";

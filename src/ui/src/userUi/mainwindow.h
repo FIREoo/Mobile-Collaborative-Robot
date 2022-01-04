@@ -175,7 +175,7 @@ class MainWindow : public QMainWindow
 
     void on_pushButton_clear_execute_clicked();
 
-private:
+  private:
     Ui::MainWindow *ui;
     QStandardItemModel *nlp_itemModel = new QStandardItemModel();
     QStringListModel *msg_listModel = new QStringListModel();

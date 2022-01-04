@@ -170,6 +170,7 @@ add_executable(userUi
     src/userUi/mainwindow.ui
     src/userUi/mainwindow.cpp
     src/userUi/main.cpp
+    src/userUi/subclass.cpp
 )
 
 
