@@ -1,0 +1,68 @@
+{
+  "artificialDelayMilliseconds": 300,
+  "keepExistingTerminalsOpen": false,
+  "runOnStartup": true,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "[Make]",
+          "commands": [
+            "source /opt/ros/noetic/setup.bash",
+            "source devel/setup.bash"
+          ]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "[TM]",
+          "commands": [
+            "source /opt/ros/noetic/setup.bash",
+            "source devel/setup.bash",
+            "source ~/Desktop/TM5_700_ws/devel/setup.bash",
+            "roslaunch robot_vision tm_robot.launch"
+          ],
+          "shouldRunCommands": false
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Image Process",
+          "commands": [
+            "source /opt/ros/noetic/setup.bash",
+            "source devel/setup.bash",
+            "roslaunch robot_vision processImage.launch"
+          ],
+          "shouldRunCommands": false
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Voice Process",
+          "commands": [
+            "source /opt/ros/noetic/setup.bash",
+            "source devel/setup.bash",
+            "roslaunch nlp_pkg voice_to_text.launch"
+          ],
+          "shouldRunCommands": false
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "UI",
+          "commands": [
+            "ROS"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+<launch>
+    <include file="$(find azure_kinect_ros_driver)/launch/driver.launch" />
+
+    <node name="processImage" pkg="robot_vision" type="imgProccess" output="screen" /> <!-- process image include color and point cloud -->
+    <node name="tf_boardcast" pkg="robot_vision" type="tf_boardcast" output="screen" />
+
+    <node name="processAruco" pkg="robot_vision" type="aruco_detect" output="screen">
+        <param name="fx" type="double" value="978.451" />
+        <param name="fy" type="double" value="978.683" />
+        <param name="cx" type="double" value="1023.29" />
+        <param name="cy" type="double" value="779.833" />
+        <param name="k1" type="double" value="0.362504" />
+        <param name="k2" type="double" value="-2.49193" />
+        <param name="p1" type="double" value="0.000118025" />
+        <param name="p2" type="double" value="-0.000162683" />
+        <param name="k3" type="double" value="1.44097" />
+        <param name="k4" type="double" value="0.241069" />
+        <param name="k5" type="double" value="-2.30814" />
+        <param name="k6" type="double" value="1.36445" />
+        <remap from="/source_image" to="/rgb/image_raw" />
+        <param name="frame_id" type="string" value="kinect" />
+    </node>
+
+    <!-- Add one cam and aruco -->
+    <group>
+        <!-- AVerMedia PW313D (L) 1920*1080 (6) -->
+        <arg name="device_id" default="upper_camera1" /> <!-- device name-->
+        <arg name="device_index" default="6" /> <!-- VideoCapture index-->
+        <arg name="image_width" default="1920" /> <!-- Camera width-->
+        <arg name="image_height" default="1080" /> <!-- Camera height-->
+
+        <node name="pub_$(arg device_id)" pkg="robot_vision" type="pub_upper_camera.py" output="screen">
+            <param name="device_index" type="int" value="$(arg device_index)" />
+            <param name="image_width" type="int" value="$(arg image_width)" />
+            <param name="image_height" type="int" value="$(arg image_height)" />
+            <remap from="/camera/image" to="$(arg device_id)/image" />
+        </node>
+        <node name="processAruco_$(arg device_id)" pkg="robot_vision" type="aruco_detect" output="screen">
+            <param name="fx" type="double" value="1628.224" />
+            <param name="fy" type="double" value="1628.870" />
+            <param name="cx" type="double" value="960.870" />
+            <param name="cy" type="double" value="538.115" />
+            <param name="k1" type="double" value="0.15364596" />
+            <param name="k2" type="double" value="-0.79704319" />
+            <param name="p1" type="double" value="0.00101418" />
+            <param name="p2" type="double" value="0.00209017" />
+            <param name="k3" type="double" value="0.56643953" />
+            <param name="k4" type="double" value="0" />
+            <param name="k5" type="double" value="0" />
+            <param name="k6" type="double" value="0" />
+
+            <remap from="/source_image" to="$(arg device_id)/image" />
+            <param name="frame_id" type="string" value="$(arg device_id)" />
+        </node>
+    </group>
+
+    <!-- Add one cam and aruco -->
+    <group>
+        <!-- AVerMedia PW313D (R) 2592*1944 (2) -->
+        <arg name="device_id" default="upper_camera2" /> <!-- device name-->
+        <arg name="device_index" default="2" /> <!-- VideoCapture index-->
+        <arg name="image_width" default="2592" /> <!-- Camera width-->
+        <arg name="image_height" default="1944" /> <!-- Camera height-->
+
+        <node name="pub_$(arg device_id)" pkg="robot_vision" type="pub_upper_camera.py" output="screen">
+            <param name="device_index" type="int" value="$(arg device_index)" />
+            <param name="image_width" type="int" value="$(arg image_width)" />
+            <param name="image_height" type="int" value="$(arg image_height)" />
+            <remap from="/camera/image" to="$(arg device_id)/image" />
+        </node>
+        <node name="processAruco_$(arg device_id)" pkg="robot_vision" type="aruco_detect" output="screen">
+            <param name="fx" type="double" value="2009.421" />
+            <param name="fy" type="double" value="2011.409" />
+            <param name="cx" type="double" value="1282.522" />
+            <param name="cy" type="double" value="979.453" />
+            <param name="k1" type="double" value="0.109171439" />
+            <param name="k2" type="double" value="-0.791665577" />
+            <param name="p1" type="double" value="-0.000326078853" />
+            <param name="p2" type="double" value="-0.000941077195" />
+            <param name="k3" type="double" value="1.09959228" />
+            <param name="k4" type="double" value="0" />
+            <param name="k5" type="double" value="0" />
+            <param name="k6" type="double" value="0" />
+
+            <remap from="/source_image" to="$(arg device_id)/image" />
+            <param name="frame_id" type="string" value="$(arg device_id)" />
+        </node>
+    </group>
+
+
+</launch>

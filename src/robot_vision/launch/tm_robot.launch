@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="tf" type="tf_remap" name="tf_remapper" output="screen">
+        <rosparam param="mappings">
+            [{old: base, new: /TM_robot/base},{old: tool0, new: /TM_robot/tcp}]
+        </rosparam>
+    </node>
+    <group>
+        <remap from="tf" to="tf_old" />
+        <node name="tm_driver" pkg="tm_driver" type="tm_driver" args="192.168.0.10" output="screen" />
+    </group>
+    
+</launch>

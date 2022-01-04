@@ -1,0 +1,12 @@
+<launch>
+    <arg name="device_index" default="6" /> <!-- VideoCapture index-->
+    <arg name="image_width" default="1920" /> <!-- Camera width-->
+    <arg name="image_height" default="1080" /> <!-- Camera height-->
+    <remap from="camera/image" to="camera/image/0" /> <!-- the topic of image-->
+  <!-- Image capture node-->
+    <node name="cam_capture_node" pkg="robot_vision" type="upper_camera" output="screen" >
+        <param name="device_index" type="int" value="$(arg device_index)" />
+        <param name="image_width" type="int" value="$(arg image_width)" />
+        <param name="image_height" type="int" value="$(arg image_height)" />
+    </node>
+</launch>

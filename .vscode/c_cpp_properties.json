@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/fire/Desktop/TM5_700_ws/devel/include/**",
+        "/home/fire/Desktop/NewEra_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/fire/Desktop/test_ws/src/Xunwei/include/**",
+        "/home/fire/Desktop/NewEra_ws/src/joyControl/include/**",
+        "/home/fire/Desktop/test_ws/src/test_pkg/include/**",
+        "/home/fire/Desktop/TM5_700_ws/src/tmr_ros1/tm_driver/include/**",
+        "/usr/include/**",
+        "${workspaceFolder}/**",
+        "/usr/include/x86_64-linux-gnu/qt5",
+        "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

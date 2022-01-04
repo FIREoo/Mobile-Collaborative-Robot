@@ -1,0 +1,32 @@
+<launch>
+    <group>
+        <arg name="device_id" default="upper_camera1" /> <!-- device name-->
+        <arg name="device_index" default="6" /> <!-- VideoCapture index-->
+        <arg name="image_width" default="1920" /> <!-- Camera width-->
+        <arg name="image_height" default="1080" /> <!-- Camera height-->
+        <arg name="publish_topic_id" default="upper_camera1/image" /> <!-- the topic of image-->
+
+        <node name="pub_$(arg device_id)" pkg="robot_vision" type="pub_upper_camera.py" output="screen">
+            <param name="device_index" type="int" value="$(arg device_index)" />
+            <param name="image_width" type="int" value="$(arg image_width)" />
+            <param name="image_height" type="int" value="$(arg image_height)" />
+            <remap from="/camera/image" to="$(arg publish_topic_id)" />
+        </node>
+    </group>
+
+    <group>
+        <arg name="device_id" default="upper_camera2" /> <!-- device name-->
+        <arg name="device_index" default="0" /> <!-- VideoCapture index-->
+        <arg name="image_width" default="1920" /> <!-- Camera width-->
+        <arg name="image_height" default="1080" /> <!-- Camera height-->
+        <arg name="publish_topic_id" default="upper_camera2/image" /> <!-- the topic of image-->
+
+        <node name="pub_$(arg device_id)" pkg="robot_vision" type="pub_upper_camera.py" output="screen">
+            <param name="device_index" type="int" value="$(arg device_index)" />
+            <param name="image_width" type="int" value="$(arg image_width)" />
+            <param name="image_height" type="int" value="$(arg image_height)" />
+            <remap from="/camera/image" to="$(arg publish_topic_id)" />
+        </node>
+    </group>
+
+</launch>
