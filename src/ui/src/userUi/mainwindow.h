@@ -1,28 +1,44 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "string.h"
+#include "ui_mainwindow.h"
 #include <QAbstractItemView>
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include <QStringList>
 #include <QStringListModel>
+#include <QtWidgets>
 #include <map>
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "tm_msgs/FeedbackState.h"
+#include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Twist.h>
 #include <image_transport/image_transport.h>
+#include <sensor_msgs/Joy.h>
 #include <sensor_msgs/image_encodings.h>
+#include <std_srvs/Empty.h>
+#include <std_srvs/SetBool.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
+// TM, NewEra
+#include "tm_msgs/FeedbackState.h"
+#include "tm_msgs/SendScript.h"
+#include "tm_msgs/SetIO.h"
+#include "tm_msgs/SetPositions.h"
+#include <robot_vision/PoseTrans.h>//service
+#include <ui/DigitLEDControl.h>
 
 // #include "myThreadHandle.h"
-
+#include "subclass.h"
+#include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -84,12 +100,13 @@ class MainWindow : public QMainWindow
     int servo_track_offset_x = 0;// mm
     int servo_track_offset_y = 0;// mm
 
-    double tm_joint[6];
-    double tm_tcp_pos[6];
-    double tm_tcp_speed[6];
-    double tm_tcp_speed_x = 0;
-    double tm_tcp_speed_y = 0;
-    double tm_tcp_speed_z = 0;
+    TmRobot tm;
+    // double tm_joint[6];
+    // double tm_tcp_pos[6];
+    // double tm_tcp_speed[6];
+    // double tm_tcp_speed_x = 0;
+    // double tm_tcp_speed_y = 0;
+    // double tm_tcp_speed_z = 0;
     void waitTM(double delaySec);
 
 
@@ -175,7 +192,8 @@ class MainWindow : public QMainWindow
 
     void on_pushButton_clear_execute_clicked();
 
-  private:
+
+private:
     Ui::MainWindow *ui;
     QStandardItemModel *nlp_itemModel = new QStandardItemModel();
     QStringListModel *msg_listModel = new QStringListModel();

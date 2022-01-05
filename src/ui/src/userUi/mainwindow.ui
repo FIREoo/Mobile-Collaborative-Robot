@@ -39,7 +39,7 @@
       <x>10</x>
       <y>90</y>
       <width>341</width>
-      <height>171</height>
+      <height>91</height>
      </rect>
     </property>
    </widget>
@@ -882,7 +882,7 @@ upper_camera2</string>
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>270</y>
+      <y>190</y>
       <width>301</width>
       <height>41</height>
      </rect>
