@@ -14,6 +14,7 @@ rospy.init_node('camera_node', anonymous=True)
 pub = rospy.Publisher('camera/image', Image, queue_size=1)
 rate = rospy.Rate(10)  # 10hz
 
+#v4l2-ctl --list-devices
 #AVerMedia PW313D (L) 1920*1080 (6)
 index = rospy.get_param('~device_index')
 cap = cv2.VideoCapture(int(index), cv2.CAP_V4L2)

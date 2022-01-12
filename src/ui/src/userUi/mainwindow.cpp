@@ -16,6 +16,10 @@
 using std::string;
 #pragma endregion ___include___
 
+#define C033 "\033[0;33m"
+#define C094 "\033[0;94m"
+#define C0 "\033[0m"
+
 
 //---ThreadHandle---\\.
 #pragma region ThreadHandle
@@ -342,12 +346,12 @@ void MainWindow::TM_pos_Callback(const tm_msgs::FeedbackState::ConstPtr &msg)
             // tm_joint[5] = msg->joint_pos[5];
             tm.axis_joint = TmJoint(msg->joint_pos[0], msg->joint_pos[1], msg->joint_pos[2], msg->joint_pos[3], msg->joint_pos[4], msg->joint_pos[5], "rad");
 
-            ui->tm_joint_j0->setText(QString::number(tm.axis_joint.j0 / M_PI * 180.0, 'd', 1));
-            ui->tm_joint_j1->setText(QString::number(tm.axis_joint.j1 / M_PI * 180.0, 'd', 1));
-            ui->tm_joint_j2->setText(QString::number(tm.axis_joint.j2 / M_PI * 180.0, 'd', 1));
-            ui->tm_joint_j3->setText(QString::number(tm.axis_joint.j3 / M_PI * 180.0, 'd', 1));
-            ui->tm_joint_j4->setText(QString::number(tm.axis_joint.j4 / M_PI * 180.0, 'd', 1));
-            ui->tm_joint_j5->setText(QString::number(tm.axis_joint.j5 / M_PI * 180.0, 'd', 1));
+            ui->tm_joint_j0->setText(QString::number(tm.axis_joint.j0, 'd', 1));
+            ui->tm_joint_j1->setText(QString::number(tm.axis_joint.j1, 'd', 1));
+            ui->tm_joint_j2->setText(QString::number(tm.axis_joint.j2, 'd', 1));
+            ui->tm_joint_j3->setText(QString::number(tm.axis_joint.j3, 'd', 1));
+            ui->tm_joint_j4->setText(QString::number(tm.axis_joint.j4, 'd', 1));
+            ui->tm_joint_j5->setText(QString::number(tm.axis_joint.j5, 'd', 1));
         }
         if (msg->tool_pose.size() == 6)
         {
@@ -364,8 +368,8 @@ void MainWindow::TM_pos_Callback(const tm_msgs::FeedbackState::ConstPtr &msg)
             ui->tm_pos_x->setText(QString::number(tm.tcp_pose.x * 1000, 'd', 1));
             ui->tm_pos_y->setText(QString::number(tm.tcp_pose.y * 1000, 'd', 1));
             ui->tm_pos_z->setText(QString::number(tm.tcp_pose.z * 1000, 'd', 1));
-            ui->tm_pos_Rx->setText(QString::number(tm.tcp_pose.Rz, 'd', 1));
-            ui->tm_pos_Ry->setText(QString::number(tm.tcp_pose.Rz, 'd', 1));
+            ui->tm_pos_Rx->setText(QString::number(tm.tcp_pose.Rx, 'd', 1));
+            ui->tm_pos_Ry->setText(QString::number(tm.tcp_pose.Ry, 'd', 1));
             ui->tm_pos_Rz->setText(QString::number(tm.tcp_pose.Rz, 'd', 1));
         }
         if (msg->tcp_speed.size() == 6)
@@ -597,7 +601,7 @@ std::string MainWindow::replace_text(std::string str, std::string find, std::str
 }
 void MainWindow::on_pushButton_creatActionBase_clicked()
 {
-    ROS_INFO("Creat action base");
+    // ROS_INFO("Creat action base");
     // test input
     // ui->textEdit_voice->setText(QString::fromLocal8Bit("把板手拿給我"));
     std::string voiceCmd = ui->textEdit_voice->toPlainText().toStdString();
@@ -606,7 +610,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         QMessageBox::about(NULL, "Error", "No voice command");
         return;
     }
-    ROS_INFO("Voice Cmd : %s", voiceCmd.c_str());
+    ROS_INFO("%sVoice Cmd : %s%s", C094, C0, voiceCmd.c_str());
 
     if (voiceCmd == "好" || voiceCmd == "停")
     {
@@ -631,7 +635,8 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
     };
     std::map<string, string> map_object = {
         { "起子", "Screwdriver" },
-        { "板手", "Wrench" },
+        // { "板手", "Wrench" },
+        { "板手", "Hex keys" },
         { "砂紙", "Sand paper" },
         { "刷子", "Brush" },
         { "吸塵器", "Vacuum cleaner" },
@@ -639,11 +644,17 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         { "椅子", "Chair" },
         { "三角椅面", "Triangle seat" },
         { "方形椅面", "Squre seat" },
+        // { "椅面", "Chair seat" },
         { "椅腳", "Chair leg" },
         { "椅背", "Chair back" },
         { "螺絲", "Screw" }
     };
-    std::map<string, string> map_destination = { { "這裡", "Here" }, { "桌", "Table" }, { "木板", "Board" }, { "回去", "Tool space" } };// , {"手", "Hand",}
+    std::map<string, string> map_destination = {
+        { "這裡", "Here" },
+        { "桌", "Table" },
+        { "木板", "Board" },
+        { "回去", "Tool space" }
+    };
 
     std::map<string, string> omit_action_fromDes = { { "Hand", "Place" } };
     std::map<string, string> omit_object_fromAct = { { "Snad", "Sand paper" }, { "Vacuum", "Vacuum cleaner" }, { "Paint", "Brush" } };
@@ -665,7 +676,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
             int size = s.first.size();
             index_find = index;
             size_find = size;
-            ROS_INFO("find act : %s", s.first.c_str());
+            ROS_INFO("%sfind act : %s%s", C094, C0, s.first.c_str());
             break;
         }
     }
@@ -677,12 +688,12 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         replace += "[act]";
         string tmpT = voiceCmd;
         tmpT.replace(index_find, size_find, replace);
-        ROS_INFO("%s", voiceCmd.c_str());
+        // ROS_INFO("%s", voiceCmd.c_str());
     }
     else if (Action == "")//省略 目標
     {
         Action = "Place";
-        ROS_INFO("%s", voiceCmd.c_str());
+        // ROS_INFO("%s", voiceCmd.c_str());
     }
 
     // Destination
@@ -697,7 +708,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
             int size = s.first.size();
             index_find = index;
             size_find = size;
-            ROS_INFO("find des : %s", s.first.c_str());
+            ROS_INFO("%sfind des : %s%s", C094, C0, s.first.c_str());
             break;
         }
     }
@@ -707,12 +718,12 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         string replace = "";
         replace += "[des]";
         voiceCmd.replace(index_find, size_find, replace);
-        ROS_INFO("%s", voiceCmd.c_str());
+        // ROS_INFO("%s", voiceCmd.c_str());
     }
     else if (Destination == "")//省略 目標
     {
         Destination = "Hand";
-        ROS_INFO("%s", voiceCmd.c_str());
+        // ROS_INFO("%s", voiceCmd.c_str());
     }
 
     // interact
@@ -727,7 +738,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
             int size = s.first.size();
             index_find = index;
             size_find = size;
-            ROS_INFO("find obj : %s", s.first.c_str());
+            ROS_INFO("%sfind obj : %s%s", C094, C0, s.first.c_str());
             break;
         }
     }
@@ -736,7 +747,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         string replace = "";
         replace += "[obj]";
         voiceCmd.replace(index_find, size_find, replace);
-        ROS_INFO("%s", voiceCmd.c_str());
+        // ROS_INFO("%s", voiceCmd.c_str());
     }
     else if (InteractObject == "")//省略 互動物件
     {
@@ -744,7 +755,7 @@ void MainWindow::on_pushButton_creatActionBase_clicked()
         {
             InteractObject = Destination;
             Destination = "Hand";
-            ROS_INFO("%s", voiceCmd.c_str());
+            // ROS_INFO("%s", voiceCmd.c_str());
         }
         else
         {
@@ -767,30 +778,30 @@ void MainWindow::tm_grip_object(std::string obj)
 {
     if (obj == "Brush")
     {
-        sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.83,-16.99,-83.98,-168.55,90.10,-149.96,100,200,0,false)");// grip
-        waitTM(1);
-        sendGrip(true);
-        sleep(3);
-        sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
-        waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,-16.99,-83.98,-168.55,90.10,-149.96,100,200,0,false)");// grip
+        // waitTM(1);
+        // sendGrip(true);
+        // sleep(3);
+        // sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
+        // waitTM(1);
     }
     else if (obj == "Sand paper")
     {
-        cv::Point2f p = getTrackPoint_yellow();
-        sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",250,125,0,-45,100,200,0,false)");// mm-deg up
-        waitTM(1);
-        sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",216,125,0,-45,100,200,0,false)");// mm-deg down
-        waitTM(1);
-        sendGrip(true);
-        sleep(3);
-        sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",250,125,0,-45,100,200,0,false)");// mm-deg up
-        waitTM(1);
+        // cv::Point2f p = getTrackPoint_yellow();
+        // sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",250,125,0,-45,100,200,0,false)");// mm-deg up
+        // waitTM(1);
+        // sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",216,125,0,-45,100,200,0,false)");// mm-deg down
+        // waitTM(1);
+        // sendGrip(true);
+        // sleep(3);
+        // sendCMD("PTP(\"CPP\"," + std::to_string(p.x * 1000) + "," + std::to_string(p.y * 1000) + ",250,125,0,-45,100,200,0,false)");// mm-deg up
+        // waitTM(1);
     }
     else if (obj == "Vacuum cleaner")
     {
@@ -802,6 +813,10 @@ void MainWindow::tm_grip_object(std::string obj)
         tm.moveTo(TmJoint(-18.11, -25.40, -38.77, -102.67, 29.30, -169.71, "deg"), 100, true, true);// up
         tm.moveTo(TmJoint(-27.52, -12.44, -58.81, -90.08, 20.23, -163.63, "deg"), 100, true, true); // out safe
     }
+    else if (obj == "Triangle seat")
+    {
+        ROS_INFO("\033[0;42m[Grip Tri-seat]\033[0m");
+    }
     else
     {
         QMessageBox::about(NULL, "Error", "Unknow objet!");
@@ -811,50 +826,52 @@ void MainWindow::tm_place_object(std::string obj)
 {
     if (obj == "Brush")
     {
-        sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.83,-16.99,-83.98,-168.55,90.10,-149.96,100,200,0,false)");// grip
-        waitTM(1);
-        sendGrip(false);
-        sleep(1);
-        sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
-        waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,-16.99,-83.98,-168.55,90.10,-149.96,100,200,0,false)");// grip
+        // waitTM(1);
+        // sendGrip(false);
+        // sleep(1);
+        // sendCMD("PTP(\"JPP\",-104.84,-16.05,-77.61,-175.87,90.10,-149.95,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-104.83,35.07,-82.00,-135.33,82.01,-163.61,100,200,0,false)");// out safe
+        // waitTM(1);
     }
     else if (obj == "Sand paper")
     {
-        sendCMD("PTP(\"JPP\",-18.46,8.62,-89.74,-135.47,72.34,-193.04,100,200,0,false)");// out safe
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-18.46,9.13,-95.06,-130.65,72.33,-193.05,100,200,0,false)");// down
-        waitTM(1);
-        sendGrip(false);
-        sleep(1);
-        sendCMD("PTP(\"JPP\",-18.46,8.62,-89.74,-135.47,72.34,-193.04,100,200,0,false)");// coner out safe
-        waitTM(1);
+        // sendCMD("PTP(\"JPP\",-18.46,8.62,-89.74,-135.47,72.34,-193.04,100,200,0,false)");// out safe
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-18.46,9.13,-95.06,-130.65,72.33,-193.05,100,200,0,false)");// down
+        // waitTM(1);
+        // sendGrip(false);
+        // sleep(1);
+        // sendCMD("PTP(\"JPP\",-18.46,8.62,-89.74,-135.47,72.34,-193.04,100,200,0,false)");// coner out safe
+        // waitTM(1);
     }
     else if (obj == "Vacuum cleaner")
     {
-        sendCMD("PTP(\"JPP\",-27.52,-12.44,-58.81,-90.08,20.23,-163.63,100,200,0,false)");// out safe
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-18.11,-25.40,-38.77,-102.67,29.30,-169.71,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-18.13,-20.83,-57.07,-88.90,29.27,-169.67,100,200,0,false)");// grip
-        waitTM(1);
-        sendGrip(false);
-        sleep(1);
-        sendCMD("PTP(\"JPP\",-18.11,-25.40,-38.77,-102.67,29.30,-169.71,100,200,0,false)");// up
-        waitTM(1);
-        sendCMD("PTP(\"JPP\",-27.52,-12.44,-58.81,-90.08,20.23,-163.63,100,200,0,false)");// out safe
-        waitTM(1);
+        // sendCMD("PTP(\"JPP\",-27.52,-12.44,-58.81,-90.08,20.23,-163.63,100,200,0,false)");// out safe
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-18.11,-25.40,-38.77,-102.67,29.30,-169.71,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-18.13,-20.83,-57.07,-88.90,29.27,-169.67,100,200,0,false)");// grip
+        // waitTM(1);
+        // sendGrip(false);
+        // sleep(1);
+        // sendCMD("PTP(\"JPP\",-18.11,-25.40,-38.77,-102.67,29.30,-169.71,100,200,0,false)");// up
+        // waitTM(1);
+        // sendCMD("PTP(\"JPP\",-27.52,-12.44,-58.81,-90.08,20.23,-163.63,100,200,0,false)");// out safe
+        // waitTM(1);
     }
     else
     {
         QMessageBox::about(NULL, "Error", "Unknow objet!");
     }
 }
+
+
 
 void MainWindow::on_btn_tm_execute_nlp_clicked()
 {
@@ -870,6 +887,7 @@ void MainWindow::on_btn_tm_execute_nlp_clicked()
     // Action     InteractObject     Destination
     clearItem(msg_listModel);
 
+    /*Gripping Objict*/
     if (GrippingObject != "" && InteractObject != GrippingObject)
     {
         addItem(msg_listModel, QString::fromStdString("Place " + GrippingObject));
@@ -885,6 +903,7 @@ void MainWindow::on_btn_tm_execute_nlp_clicked()
         ui->label_grippingObject->setText(setStringColor(QString::fromStdString(GrippingObject), "#c25555"));
     }
 
+    /*Action*/
     if (Action == "Place")
     {
         if (Destination == "Tool space")
@@ -941,6 +960,12 @@ void MainWindow::on_btn_tm_execute_nlp_clicked()
         // Track
         // thread_TM_servoOn("/track/blue");
     }
+    else if (Action == "Paint")
+    {
+        if (Destination == "Here")
+        {
+        }
+    }
     else
     {
         QMessageBox::about(NULL, "Error", "Unknow action!");
@@ -952,6 +977,7 @@ void MainWindow::on_btn_tm_execute_nlp_clicked()
 
 //---New Era---\\.
 #pragma region New Era
+
 void MainWindow::on_pushButton_NE_light_clicked()
 {
     // ros::NodeHandle n;
@@ -1071,6 +1097,66 @@ void MainWindow::on_pushButton_NE_releaseBreak_clicked()
     {
         ROS_ERROR("Failed to call service /enable_wheel_release");
     }
+}
+
+/*navigation*/
+void MainWindow::on_pushButton_NE_get_pose_clicked()
+{
+    geometry_msgs::TransformStamped trans;
+    trans = lookupTransform("world", "upper_camera2/track/aruco/5x5/5");
+    ROS_INFO("M03(%.3lf,%.3lf,%.3lf)", trans.transform.translation.x, trans.transform.translation.y, trans.transform.translation.z);
+}
+void MainWindow::on_pushButton_NE_goto_A_clicked()
+{
+    ROS_INFO("M03 Move to A");
+    geometry_msgs::Twist geControlSpeed;
+    geControlSpeed.linear.x = -0.6f * 0.1f;
+    geControlSpeed.angular.z = 0 * 10.0f;
+    geometry_msgs::TransformStamped trans;
+    trans = lookupTransform("world", "upper_camera2/track/aruco/5x5/5");
+    ros::Rate loop_rate(4);
+    while (true)
+    {
+        trans = lookupTransform("world", "upper_camera2/track/aruco/5x5/5");
+        if (trans.transform.translation.x < -1.7)
+        {
+            break;
+        }
+        NewEra_speed_pub.publish(geControlSpeed);
+        loop_rate.sleep();
+    }
+
+    geometry_msgs::Twist ControlSpeed_stop;
+    ControlSpeed_stop.linear.x = 0.0f;
+    ControlSpeed_stop.angular.z = 0.0f;
+    NewEra_speed_pub.publish(ControlSpeed_stop);
+    ROS_INFO("M03 Arrive A");
+}
+void MainWindow::on_pushButton_NE_goto_WS_clicked()
+{
+    ROS_INFO("M03 Move to WS");
+    geometry_msgs::Twist geControlSpeed;
+    geControlSpeed.linear.x = 0.6f * 0.1f;
+    geControlSpeed.angular.z = 0 * 10.0f;
+    geometry_msgs::TransformStamped trans;
+    trans = lookupTransform("world", "upper_camera2/track/aruco/5x5/5");
+    ros::Rate loop_rate(4);
+    while (true)
+    {
+        trans = lookupTransform("world", "upper_camera2/track/aruco/5x5/5");
+        if (trans.transform.translation.x > -1.05)
+        {
+            break;
+        }
+        NewEra_speed_pub.publish(geControlSpeed);
+        loop_rate.sleep();
+    }
+
+    geometry_msgs::Twist ControlSpeed_stop;
+    ControlSpeed_stop.linear.x = 0.0f;
+    ControlSpeed_stop.angular.z = 0.0f;
+    NewEra_speed_pub.publish(ControlSpeed_stop);
+    ROS_INFO("M03 Arrive WS");
 }
 
 #pragma endregion
@@ -1518,7 +1604,35 @@ void MainWindow::on_pushButton_clear_execute_clicked()
     clearItem(msg_listModel);
 }
 
-
+void MainWindow::on_btn_set_tm_joint_clicked()
+{
+    double j0 = ui->lineEdit_tm_cmd_0->text().toDouble();
+    double j1 = ui->lineEdit_tm_cmd_1->text().toDouble();
+    double j2 = ui->lineEdit_tm_cmd_2->text().toDouble();
+    double j3 = ui->lineEdit_tm_cmd_3->text().toDouble();
+    double j4 = ui->lineEdit_tm_cmd_4->text().toDouble();
+    double j5 = ui->lineEdit_tm_cmd_5->text().toDouble();
+    ROS_INFO("(%.1lf,%.1lf,%.1lf,%.1lf,%.1lf,%.1lf)", j0, j1, j2, j3, j4, j5);
+    // tm.moveTo(TmJoint(j0, j1, j2, j3, j4, j5, "deg"));
+}
+void MainWindow::on_btn_set_tm_copy_pose_clicked()
+{
+    ui->lineEdit_tm_cmd_0->setText(QString::number(tm.tcp_pose.x * 1000, 'd', 1));
+    ui->lineEdit_tm_cmd_1->setText(QString::number(tm.tcp_pose.y * 1000, 'd', 1));
+    ui->lineEdit_tm_cmd_2->setText(QString::number(tm.tcp_pose.z * 1000, 'd', 1));
+    ui->lineEdit_tm_cmd_3->setText(QString::number(tm.tcp_pose.Rx, 'd', 1));
+    ui->lineEdit_tm_cmd_4->setText(QString::number(tm.tcp_pose.Ry, 'd', 1));
+    ui->lineEdit_tm_cmd_5->setText(QString::number(tm.tcp_pose.Rz, 'd', 1));
+}
+void MainWindow::on_btn_set_tm_copy_joint_clicked()
+{
+    ui->lineEdit_tm_cmd_0->setText(QString::number(tm.axis_joint.j0, 'd', 1));
+    ui->lineEdit_tm_cmd_1->setText(QString::number(tm.axis_joint.j1, 'd', 1));
+    ui->lineEdit_tm_cmd_2->setText(QString::number(tm.axis_joint.j2, 'd', 1));
+    ui->lineEdit_tm_cmd_3->setText(QString::number(tm.axis_joint.j3, 'd', 1));
+    ui->lineEdit_tm_cmd_4->setText(QString::number(tm.axis_joint.j4, 'd', 1));
+    ui->lineEdit_tm_cmd_5->setText(QString::number(tm.axis_joint.j5, 'd', 1));
+}
 
 /*PTP*/
 void MainWindow::on_btn_set_tm_pos_1_clicked()
@@ -1887,12 +2001,6 @@ void MainWindow::on_btn_set_tf2_upper_camera2_clicked()
 void MainWindow::on_pushButton_ros_spin_clicked()
 {
     qApp->processEvents();
-}
-
-#define C1 "\033[0;33m"
-#define C0 "\033[0m"
-void MainWindow::on_pushButton_test1_clicked()
-{
     TmJoint joint_0(1.17, 17.25, -115.47, -85.09, 47.06, -189.51, "deg");
     TmJoint joint_1(1.17, 7.25, -115.47, -85.09, 47.06, -189.51, "deg");
     TmPose tcp0(-450, -350, 215, 100, 0, -45, "mm", "deg");
@@ -1905,4 +2013,13 @@ void MainWindow::on_pushButton_test1_clicked()
     tm.moveTo(joint_1, 50, true, true);
     tm.moveTo(tcp0, 50, true, true);
     tm.moveTo(tcp1, 50, true, true);
+}
+
+
+void MainWindow::on_pushButton_test1_clicked()
+{
+
+    geometry_msgs::TransformStamped trans;
+    trans = lookupTransform("kinect", "yolo/hand");
+    ROS_INFO("hand(%.3lf,%.3lf,%.3lf)", trans.transform.translation.x, trans.transform.translation.y, trans.transform.translation.z);
 }

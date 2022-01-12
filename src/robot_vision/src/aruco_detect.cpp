@@ -77,6 +77,8 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
             cv::Mat rotationMatrix = (cv::Mat_<float>(3, 3) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
             for (int i = 0; i < ids_5x5.size(); i++)
             {
+                if (ids_5x5[i] > 10)
+                    continue;
                 try
                 {
                     cv::Rodrigues(rvecs[i], rotationMatrix);
@@ -118,6 +120,8 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
             cv::Mat rotationMatrix = (cv::Mat_<float>(3, 3) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
             for (int i = 0; i < ids_4x4.size(); i++)
             {
+                if (ids_4x4[i] > 0)
+                    continue;
                 try
                 {
                     cv::Rodrigues(rvecs[i], rotationMatrix);

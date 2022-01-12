@@ -3,6 +3,7 @@
 #include <geometry_msgs/Pose.h>
 #include <image_transport/image_transport.h>
 #include <iostream>
+#include <robot_vision/YoloBoundingBox.h>
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/PointField.h>
@@ -118,6 +119,25 @@ void pointCloud2_Callback(const sensor_msgs::PointCloud2ConstPtr &msg)
     latestData = std::vector<uint8_t>(msg->data);
     // latestData.swap(msg->data);
     // latestData = msg->data;
+}
+
+/*YOLO*/
+void yolo_Callback(const robot_vision::YoloBoundingBoxConstPtr &msg)
+{
+    std::string name = std::string(msg->object_name);
+    int x = uint16_t(msg->x);
+    int y = uint16_t(msg->y);
+    int width = uint16_t(msg->width);
+    int height = uint16_t(msg->height);
+    // ROS_INFO("(%d,%d,%d,%d)", x, y, width, height);
+    PointCloud center_pc = _getLatestPC(x + width / 2, y + height / 2);
+    // ROS_INFO("hand(%.3lf,%.3lf,%.3lf)", center_pc.x, center_pc.y, center_pc.z);
+    static tf::TransformBroadcaster br;
+    tf::Transform transform;
+    transform.setOrigin(tf::Vector3(center_pc.x, center_pc.y, center_pc.z));
+    tf::Quaternion q(0, 0, 0, 1);
+    transform.setRotation(q);
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "kinect", "yolo/hand"));
 }
 
 /*Image*/
@@ -282,6 +302,9 @@ int main(int argc, char **argv)
 
     /*PointCloud2*/
     ros::Subscriber sub_pc = n.subscribe("points2", 1, pointCloud2_Callback);
+
+    /*YOLO*/
+    ros::Subscriber sub_yolo = n.subscribe("yolo/hand/box", 1, yolo_Callback);
 
     ros::spin();
     // cv::destroyWindow("MixMask");

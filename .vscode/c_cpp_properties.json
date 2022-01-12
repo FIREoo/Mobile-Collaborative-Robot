@@ -12,7 +12,7 @@
                 "/home/fire/Desktop/TM5_700_ws/src/tmr_ros1/tm_driver/include/**",
                 "/home/fire/Desktop/NewEra_ws/devel/include/**",
                 "/home/fire/Desktop/NewEra_ws/src/joyControl/include/**",
-                "/home/fire/Desktop/test_ws/src/test_pkg/include/**",
+                // "/home/fire/Desktop/test_ws/src/test_pkg/include/**",
                 "/usr/include/**",
                 "${workspaceFolder}/**",
                 "/usr/include/x86_64-linux-gnu/qt5",

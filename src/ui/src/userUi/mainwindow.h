@@ -193,7 +193,19 @@ class MainWindow : public QMainWindow
     void on_pushButton_clear_execute_clicked();
 
 
-private:
+    void on_pushButton_NE_get_pose_clicked();
+
+    void on_pushButton_NE_goto_A_clicked();
+
+    void on_pushButton_NE_goto_WS_clicked();
+
+    void on_btn_set_tm_joint_clicked();
+
+    void on_btn_set_tm_copy_pose_clicked();
+
+    void on_btn_set_tm_copy_joint_clicked();
+
+  private:
     Ui::MainWindow *ui;
     QStandardItemModel *nlp_itemModel = new QStandardItemModel();
     QStringListModel *msg_listModel = new QStringListModel();

@@ -190,5 +190,5 @@ add_dependencies(userUi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TA
 #   ${catkin_LIBRARIES}
 # )
 # target_link_libraries(testUI Qt5::Widgets)
-target_link_libraries(userUi Qt5::Widgets ${catkin_LIBRARIES} rotation)
+target_link_libraries(userUi Qt5::Widgets ${catkin_LIBRARIES})
 
