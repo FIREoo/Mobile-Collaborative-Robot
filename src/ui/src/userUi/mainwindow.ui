@@ -82,7 +82,7 @@
      <string notr="true">background-color:rgb(164, 191, 176)</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -866,6 +866,19 @@
       </property>
       <property name="text">
        <string>Go to WS</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_tf_br_NE">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>60</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>aruco to tm_base</string>
       </property>
      </widget>
     </widget>

@@ -86,7 +86,6 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}  src/RotationTools.cpp)
 
-
 add_executable(imgProccess src/imgProccess.cpp) 
 target_link_libraries(imgProccess ${catkin_LIBRARIES})
 
@@ -95,8 +94,10 @@ target_link_libraries(aruco_detect ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(tf_boardcast src/tf_boardcast.cpp) 
 target_link_libraries(tf_boardcast ${catkin_LIBRARIES})
-
 add_dependencies(tf_boardcast ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(draw_map src/draw_map.cpp) 
+target_link_libraries(draw_map ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############

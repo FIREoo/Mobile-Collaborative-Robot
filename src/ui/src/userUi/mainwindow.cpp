@@ -285,11 +285,13 @@ Flags::Flags()
     tf_m03Robot_inVision = false;
     tf_calibration_upperCam1 = false;
     tf_calibration_upperCam2 = false;
+    tf_loop_set_tm = false;
     saveImage1 = false;
     saveImage2 = false;
     saveImage3 = false;
     saveImage4 = false;
 }
+
 #pragma endregion ___Main and subfunction___
 
 
@@ -1596,7 +1598,7 @@ void MainWindow::on_pushButton_ros_spin_clicked()
 
 void MainWindow::on_pushButton_test1_clicked()
 {
-    static tf2_ros::StaticTransformBroadcaster br;
+    static tf2_ros::TransformBroadcaster br;
     geometry_msgs::TransformStamped transformStamped;
 
     transformStamped.header.stamp = ros::Time::now();//transform_target.header.stamp;

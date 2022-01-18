@@ -58,6 +58,7 @@ class Flags
     bool tf_calibration_upperCam1;
     bool tf_calibration_upperCam2;
     bool tf_m03Robot_inVision;
+    bool tf_loop_set_tm;
     bool saveImage1;
     bool saveImage2;
     bool saveImage3;
@@ -93,6 +94,8 @@ class MainWindow : public QMainWindow
    * @param x_offset offset axis x in Meters 
    * @param y_offset offset axis y in Meters*/
     void publishTracker(const std::string target_fram, const double x_offset, const double y_offset);
+    void publishTmBase();
+
     void publishTracker_msgFilter();
     cv::Point2f getTrackPoint_yellow();
     cv::Point2f getTrackPoint_blue();
@@ -214,6 +217,8 @@ class MainWindow : public QMainWindow
     void on_pushButton_reload_image_topic_clicked();
 
     void on_checkBox_real_move_stateChanged(int arg1);
+
+    void on_pushButton_tf_br_NE_clicked();
 
   private:
     Ui::MainWindow *ui;
