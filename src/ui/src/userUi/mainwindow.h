@@ -37,7 +37,7 @@
 #include <ui/DigitLEDControl.h>
 
 // #include "myThreadHandle.h"
-#include "subclass.h"
+#include "tmrobot.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -205,6 +205,16 @@ class MainWindow : public QMainWindow
 
     void on_btn_set_tm_copy_joint_clicked();
 
+    void on_btn_set_tm_pose_clicked();
+
+    void on_comboBox_hack_voice_cmd_currentIndexChanged(int index);
+
+    void on_btn_getImage_tm_cam_clicked();
+
+    void on_pushButton_reload_image_topic_clicked();
+
+    void on_checkBox_real_move_stateChanged(int arg1);
+
   private:
     Ui::MainWindow *ui;
     QStandardItemModel *nlp_itemModel = new QStandardItemModel();
@@ -228,21 +238,27 @@ class MainWindow : public QMainWindow
     void addItem(QStandardItemModel *m, QString str1, QString str2, QString str3);
     void clearItem(QStandardItemModel *m);
     void addItem(QStringListModel *theModel, QString str);
+    void addItem(QStringListModel *theModel, QString str, QBrush brush);
     void clearItem(QStringListModel *m);
 
 
     // NLP
     int find_text(std::string text, std::string find_text);
     std::string replace_text(std::string str, std::string find, std::string replace);
+
     // tm
     void tm_grip_object(std::string obj);
     void tm_place_object(std::string obj);
+    TmJoint tmj_outHome;
+    TmJoint tmj_front;
+    bool realMove;
 
     /*global tf2 listener*/
     tf2_ros::Buffer tfBuffer;             //global tf buffer
     tf2_ros::TransformListener tfListener;//global tf listener
     geometry_msgs::TransformStamped lookupTransform(const std::string target_frame, const std::string source_frame);
     bool checkTransform(const std::string target_frame, const std::string source_frame, geometry_msgs::TransformStamped check_value);
+    void matchCalibration(std::string frame_calibration_target, std::string frame_matched_target, std::string frame_matched_marker, std::string frame_matching_source, std::string frame_matching_marker);
 };
 
 

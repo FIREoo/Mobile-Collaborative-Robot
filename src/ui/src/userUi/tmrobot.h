@@ -1,5 +1,5 @@
-#ifndef SUBCLASS_H
-#define SUBCLASS_H
+#ifndef TMROBOT_H
+#define TMROBOT_H
 
 #include <QAbstractItemView>
 #include <QMainWindow>
@@ -84,4 +84,4 @@ class TmRobot
 };
 
 
-#endif// SUBCLASS_H
+#endif// TMROBOT_H

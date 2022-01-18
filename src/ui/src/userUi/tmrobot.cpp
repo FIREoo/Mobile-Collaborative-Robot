@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "subclass.h"
+#include "tmrobot.h"
 
 //*****TM Pose*****//
 TmPose::TmPose()
@@ -264,51 +264,57 @@ bool TmRobot::sendScript(std::string cmd, bool print /*= true*/)
 
 bool TmRobot::moveTo(TmPose tcp, int speed_percent, bool block, bool print)
 {
-    sendScript(tcp.ToCmdString(speed_percent), false);
-    if (print)
-        ROS_INFO_STREAM("\033[1;32m[Move To]\033[0m  " + tcp.ToString());
-    if (block)
+    if (sendScript(tcp.ToCmdString(speed_percent), false))
     {
-        ros::Rate rate(10);//10hz
-        while (nh.ok())
+        if (print)
+            ROS_INFO_STREAM("\033[1;32m[Move To]\033[0m  " + tcp.ToString());
+        if (block)
         {
-            // ROS_DEBUG_STREAM(tcp_pose.ToString());
-            if (
-                abs(tcp.x - tcp_pose.x) < 0.001 &&
-                abs(tcp.y - tcp_pose.y) < 0.001 &&
-                abs(tcp.z - tcp_pose.z) < 0.001)
-                break;
+            ros::Rate rate(10);//10hz
+            while (nh.ok())
+            {
+                // ROS_DEBUG_STREAM(tcp_pose.ToString());
+                if (
+                    abs(tcp.x - tcp_pose.x) < 0.001 &&
+                    abs(tcp.y - tcp_pose.y) < 0.001 &&
+                    abs(tcp.z - tcp_pose.z) < 0.001)
+                    break;
 
-            rate.sleep();
-            ros::spinOnce();
+                rate.sleep();
+                ros::spinOnce();
+            }
         }
+        return true;
     }
-    return true;
+    return false;
 }
 bool TmRobot::moveTo(TmJoint joint, int speed_percent, bool block, bool print)
 {
-    sendScript(joint.ToCmdString(speed_percent), false);
-    if (print)
-        ROS_INFO_STREAM("\033[1;32m[Move To]\033[0m  " + joint.ToString());
-    if (block)
+    if (sendScript(joint.ToCmdString(speed_percent), false))
     {
-        ros::Rate rate(10);//10hz
-        while (nh.ok())
+        if (print)
+            ROS_INFO_STREAM("\033[1;32m[Move To]\033[0m  " + joint.ToString());
+        if (block)
         {
-            // ROS_DEBUG_STREAM(axis_joint.ToString());
-            if (
-                abs(joint.j0 - axis_joint.j0) < 0.5 &&
-                abs(joint.j1 - axis_joint.j1) < 0.5 &&
-                abs(joint.j2 - axis_joint.j2) < 0.5 &&
-                abs(joint.j3 - axis_joint.j3) < 0.5 &&
-                abs(joint.j4 - axis_joint.j4) < 0.5 &&
-                abs(joint.j5 - axis_joint.j5) < 0.5)
-                break;
+            ros::Rate rate(10);//10hz
+            while (nh.ok())
+            {
+                // ROS_DEBUG_STREAM(axis_joint.ToString());
+                if (
+                    abs(joint.j0 - axis_joint.j0) < 0.5 &&
+                    abs(joint.j1 - axis_joint.j1) < 0.5 &&
+                    abs(joint.j2 - axis_joint.j2) < 0.5 &&
+                    abs(joint.j3 - axis_joint.j3) < 0.5 &&
+                    abs(joint.j4 - axis_joint.j4) < 0.5 &&
+                    abs(joint.j5 - axis_joint.j5) < 0.5)
+                    break;
 
-            rate.sleep();
-            qApp->processEvents();
-            ros::spinOnce();
+                rate.sleep();
+                qApp->processEvents();
+                ros::spinOnce();
+            }
         }
+        return true;
     }
-    return true;
+    return false;
 }

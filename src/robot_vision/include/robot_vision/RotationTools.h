@@ -95,14 +95,12 @@ namespace Rotation
     Rotation::RotationMatrix rotateAxisY(Rotation::RotationMatrix rotationMatrix, double rad);
     Rotation::RotationMatrix rotateAxisZ(Rotation::RotationMatrix rotationMatrix, double rad);
     Rotation::RotationMatrix dot(Rotation::RotationMatrix M1, Rotation::RotationMatrix M2);
+
+
 };// namespace Rotation
 
-double toDeg(double rad)
-{
-    return rad * 180 / M_PI;
-}
-double toRad(double deg)
-{
-    return deg * M_PI / 180;
-}
+extern double toDeg(double rad);
+extern double toRad(double deg);
+
+
 #endif

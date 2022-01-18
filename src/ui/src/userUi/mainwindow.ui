@@ -1,1367 +1,1518 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-      <class>MainWindow</class>
-      <widget class="QMainWindow" name="MainWindow">
-            <property name="geometry">
-                  <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>1385</width>
-                        <height>1057</height>
-                  </rect>
-            </property>
-            <property name="windowTitle">
-                  <string>MainWindow</string>
-            </property>
-            <property name="styleSheet">
-                  <string notr="true">background-color:rgb(211, 215, 207)</string>
-            </property>
-            <widget class="QWidget" name="centralWidget">
-                  <widget class="QPushButton" name="pushButton_voice_cmd">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>0</y>
-                                    <width>181</width>
-                                    <height>31</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(56, 83, 105)</string>
-                        </property>
-                        <property name="text">
-                              <string>Voice Command</string>
-                        </property>
-                  </widget>
-                  <widget class="QTableView" name="tableView_ab">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>90</y>
-                                    <width>341</width>
-                                    <height>91</height>
-                              </rect>
-                        </property>
-                  </widget>
-                  <widget class="QTextEdit" name="textEdit_voice">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>30</y>
-                                    <width>341</width>
-                                    <height>41</height>
-                              </rect>
-                        </property>
-                        <property name="font">
-                              <font>
-                                    <pointsize>16</pointsize>
-                                    <weight>75</weight>
-                                    <bold>true</bold>
-                              </font>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(158, 197, 230)</string>
-                        </property>
-                        <property name="documentTitle">
-                              <string />
-                        </property>
-                        <property name="placeholderText">
-                              <string />
-                        </property>
-                  </widget>
-                  <widget class="QTabWidget" name="tabWidget_cmd">
-                        <property name="geometry">
-                              <rect>
-                                    <x>930</x>
-                                    <y>10</y>
-                                    <width>451</width>
-                                    <height>551</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(164, 191, 176)</string>
-                        </property>
-                        <property name="currentIndex">
-                              <number>0</number>
-                        </property>
-                        <widget class="QWidget" name="tab">
-                              <attribute name="title">
-                                    <string>TM</string>
-                              </attribute>
-                              <widget class="QWidget" name="layoutWidget">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>50</x>
-                                                <y>60</y>
-                                                <width>71</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <layout class="QVBoxLayout" name="verticalLayout">
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_x">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_y">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_z">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Rx">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Ry">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Rz">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                    </layout>
-                              </widget>
-                              <widget class="QWidget" name="layoutWidget1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>13</x>
-                                                <y>60</y>
-                                                <width>31</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <layout class="QVBoxLayout" name="verticalLayout_2">
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_x_2">
-                                                      <property name="text">
-                                                            <string>x:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_y_2">
-                                                      <property name="text">
-                                                            <string>y:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_z_2">
-                                                      <property name="text">
-                                                            <string>z:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Rx_2">
-                                                      <property name="text">
-                                                            <string>Rx:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Ry_2">
-                                                      <property name="text">
-                                                            <string>Ry:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_pos_Rz_2">
-                                                      <property name="text">
-                                                            <string>Rz:</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                    </layout>
-                              </widget>
-                              <widget class="QPushButton" name="btn_get_tm_pos">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>0</y>
-                                                <width>201</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Get TM srv</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>430</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos 1</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>460</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos 2</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_3">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>340</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos mid</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_get_tm_img">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>340</x>
-                                                <y>0</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Get Image</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_4">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>370</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos cam</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_5">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>400</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos pregrip</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_6">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>430</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Posgrip</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_7">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>460</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos up</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_8">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>100</x>
-                                                <y>490</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos mid</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_grip">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>380</x>
-                                                <y>440</y>
-                                                <width>61</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(135, 166, 204)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Grip</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_unGrip">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>380</x>
-                                                <y>470</y>
-                                                <width>61</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(135, 166, 204)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>UnGrip</string>
-                                    </property>
-                              </widget>
-                              <widget class="QSplitter" name="splitter">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>210</x>
-                                                <y>60</y>
-                                                <width>71</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <property name="orientation">
-                                          <enum>Qt::Vertical</enum>
-                                    </property>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_0">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_1">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_2">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_3">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_4">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                                    <widget class="QLineEdit" name="lineEdit_tm_cmd_5">
-                                          <property name="text">
-                                                <string>0</string>
-                                          </property>
-                                    </widget>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_servo_trackPose">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>320</x>
-                                                <y>280</y>
-                                                <width>121</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(179, 86, 39)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Servo trackPose</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_servo_stop">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>320</x>
-                                                <y>350</y>
-                                                <width>121</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(179, 86, 39)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Stop servo</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tf_tracker">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>320</x>
-                                                <y>240</y>
-                                                <width>121</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(42, 145, 85)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Set Tracker</string>
-                                    </property>
-                              </widget>
-                              <widget class="QSpinBox" name="spinBox_tracker_offset_x">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>340</x>
-                                                <y>60</y>
-                                                <width>48</width>
-                                                <height>26</height>
-                                          </rect>
-                                    </property>
-                                    <property name="minimum">
-                                          <number>-100</number>
-                                    </property>
-                                    <property name="maximum">
-                                          <number>100</number>
-                                    </property>
-                                    <property name="singleStep">
-                                          <number>10</number>
-                                    </property>
-                              </widget>
-                              <widget class="QSpinBox" name="spinBox_tracker_offset_y">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>390</x>
-                                                <y>60</y>
-                                                <width>48</width>
-                                                <height>26</height>
-                                          </rect>
-                                    </property>
-                                    <property name="minimum">
-                                          <number>-100</number>
-                                    </property>
-                                    <property name="maximum">
-                                          <number>100</number>
-                                    </property>
-                                    <property name="singleStep">
-                                          <number>10</number>
-                                    </property>
-                              </widget>
-                              <widget class="QLabel" name="label_2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>320</x>
-                                                <y>40</y>
-                                                <width>121</width>
-                                                <height>21</height>
-                                          </rect>
-                                    </property>
-                                    <property name="font">
-                                          <font>
-                                                <pointsize>12</pointsize>
-                                          </font>
-                                    </property>
-                                    <property name="text">
-                                          <string>offset x  y (mm)</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_preTrack">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>320</x>
-                                                <y>180</y>
-                                                <width>121</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pos pre track</string>
-                                    </property>
-                              </widget>
-                              <widget class="QWidget" name="layoutWidget_2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>130</x>
-                                                <y>60</y>
-                                                <width>71</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <layout class="QVBoxLayout" name="verticalLayout_3">
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j0">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j1">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j2">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j3">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j4">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                          <item>
-                                                <widget class="QLabel" name="tm_joint_j5">
-                                                      <property name="text">
-                                                            <string>000.000</string>
-                                                      </property>
-                                                </widget>
-                                          </item>
-                                    </layout>
-                              </widget>
-                              <widget class="QLabel" name="label_3">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>50</x>
-                                                <y>40</y>
-                                                <width>71</width>
-                                                <height>21</height>
-                                          </rect>
-                                    </property>
-                                    <property name="font">
-                                          <font>
-                                                <pointsize>12</pointsize>
-                                          </font>
-                                    </property>
-                                    <property name="text">
-                                          <string>Pose(mm)</string>
-                                    </property>
-                              </widget>
-                              <widget class="QLabel" name="label_4">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>130</x>
-                                                <y>40</y>
-                                                <width>81</width>
-                                                <height>21</height>
-                                          </rect>
-                                    </property>
-                                    <property name="font">
-                                          <font>
-                                                <pointsize>12</pointsize>
-                                          </font>
-                                    </property>
-                                    <property name="text">
-                                          <string>Joint(deg)</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_joint">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>210</x>
-                                                <y>0</y>
-                                                <width>71</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Set joint</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_copy_joint">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>190</x>
-                                                <y>60</y>
-                                                <width>15</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(157, 176, 155)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>&gt;</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_copy_pose">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>109</x>
-                                                <y>60</y>
-                                                <width>15</width>
-                                                <height>271</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(157, 176, 155)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>&gt;</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                        <widget class="QWidget" name="tab_2">
-                              <attribute name="title">
-                                    <string>NewEra</string>
-                              </attribute>
-                              <widget class="QPushButton" name="pushButton_NE_light">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>20</y>
-                                                <width>131</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Blink light</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_moveLittle">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>70</y>
-                                                <width>131</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Move little</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_break">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>470</y>
-                                                <width>71</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Break</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_releaseBreak">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>430</y>
-                                                <width>71</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>unBreak</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_moveF">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>120</y>
-                                                <width>131</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Go Frount</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_moveB">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>0</x>
-                                                <y>150</y>
-                                                <width>131</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Go back</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_get_pose">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>190</x>
-                                                <y>20</y>
-                                                <width>131</width>
-                                                <height>31</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Get Pose</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_goto_A">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>190</x>
-                                                <y>150</y>
-                                                <width>131</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Go to A</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="pushButton_NE_goto_WS">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>190</x>
-                                                <y>180</y>
-                                                <width>131</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="text">
-                                          <string>Go to WS</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                        <widget class="QWidget" name="tab_5">
-                              <attribute name="title">
-                                    <string>TF transform</string>
-                              </attribute>
-                              <widget class="QPushButton" name="btn_set_tf2_tm_base">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>20</x>
-                                                <y>50</y>
-                                                <width>111</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(42, 145, 85)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Set tf
-TM/base </string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tm_pos_setTF">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>20</x>
-                                                <y>20</y>
-                                                <width>111</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(120, 161, 92)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>go set TF</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tf2_upper_camera1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>180</x>
-                                                <y>20</y>
-                                                <width>111</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(42, 145, 85)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Set tf 
-upper_camera1</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_set_tf2_upper_camera2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>180</x>
-                                                <y>70</y>
-                                                <width>111</width>
-                                                <height>41</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(42, 145, 85)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Set tf 
-upper_camera2</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_ros_spin">
-                        <property name="geometry">
-                              <rect>
-                                    <x>940</x>
-                                    <y>570</y>
-                                    <width>111</width>
-                                    <height>41</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(235, 128, 61)</string>
-                        </property>
-                        <property name="text">
-                              <string>ROS Spin()</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_voice_cmd_stop">
-                        <property name="geometry">
-                              <rect>
-                                    <x>198</x>
-                                    <y>0</y>
-                                    <width>81</width>
-                                    <height>31</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(56, 83, 105)</string>
-                        </property>
-                        <property name="text">
-                              <string>stop</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="btn_getImage_2">
-                        <property name="geometry">
-                              <rect>
-                                    <x>370</x>
-                                    <y>470</y>
-                                    <width>89</width>
-                                    <height>25</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(184, 184, 184)</string>
-                        </property>
-                        <property name="text">
-                              <string>track Image</string>
-                        </property>
-                  </widget>
-                  <widget class="QLabel" name="img_main_2">
-                        <property name="geometry">
-                              <rect>
-                                    <x>370</x>
-                                    <y>500</y>
-                                    <width>512</width>
-                                    <height>384</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(46, 52, 54)</string>
-                        </property>
-                        <property name="text">
-                              <string>img_main</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_creatActionBase">
-                        <property name="geometry">
-                              <rect>
-                                    <x>30</x>
-                                    <y>70</y>
-                                    <width>301</width>
-                                    <height>21</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(56, 83, 105)</string>
-                        </property>
-                        <property name="text">
-                              <string>NLP</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="btn_tm_execute_nlp">
-                        <property name="geometry">
-                              <rect>
-                                    <x>30</x>
-                                    <y>190</y>
-                                    <width>301</width>
-                                    <height>41</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(179, 86, 39)</string>
-                        </property>
-                        <property name="text">
-                              <string>Execute</string>
-                        </property>
-                  </widget>
-                  <widget class="QLabel" name="label_grippingObject">
-                        <property name="geometry">
-                              <rect>
-                                    <x>160</x>
-                                    <y>350</y>
-                                    <width>141</width>
-                                    <height>21</height>
-                              </rect>
-                        </property>
-                        <property name="font">
-                              <font>
-                                    <pointsize>14</pointsize>
-                              </font>
-                        </property>
-                        <property name="text">
-                              <string />
-                        </property>
-                  </widget>
-                  <widget class="QLabel" name="label">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>350</y>
-                                    <width>151</width>
-                                    <height>21</height>
-                              </rect>
-                        </property>
-                        <property name="font">
-                              <font>
-                                    <pointsize>14</pointsize>
-                              </font>
-                        </property>
-                        <property name="text">
-                              <string>Gripping Object :</string>
-                        </property>
-                  </widget>
-                  <widget class="QListView" name="listView_execute_msg">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>380</y>
-                                    <width>341</width>
-                                    <height>192</height>
-                              </rect>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="btn_Image_2_save">
-                        <property name="geometry">
-                              <rect>
-                                    <x>830</x>
-                                    <y>470</y>
-                                    <width>51</width>
-                                    <height>25</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(184, 184, 184)</string>
-                        </property>
-                        <property name="text">
-                              <string>save</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_test1">
-                        <property name="geometry">
-                              <rect>
-                                    <x>1060</x>
-                                    <y>570</y>
-                                    <width>111</width>
-                                    <height>41</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(235, 128, 61)</string>
-                        </property>
-                        <property name="text">
-                              <string>Test1</string>
-                        </property>
-                  </widget>
-                  <widget class="QListView" name="listView_tm_msg">
-                        <property name="geometry">
-                              <rect>
-                                    <x>940</x>
-                                    <y>620</y>
-                                    <width>431</width>
-                                    <height>171</height>
-                              </rect>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_clearTmMsg">
-                        <property name="geometry">
-                              <rect>
-                                    <x>940</x>
-                                    <y>800</y>
-                                    <width>89</width>
-                                    <height>25</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(184, 184, 184)</string>
-                        </property>
-                        <property name="text">
-                              <string>Clear</string>
-                        </property>
-                  </widget>
-                  <widget class="QPushButton" name="btn_stopImage_2">
-                        <property name="geometry">
-                              <rect>
-                                    <x>470</x>
-                                    <y>470</y>
-                                    <width>89</width>
-                                    <height>25</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(184, 184, 184)</string>
-                        </property>
-                        <property name="text">
-                              <string>stop</string>
-                        </property>
-                  </widget>
-                  <widget class="QTabWidget" name="tabWidget_image_picker">
-                        <property name="geometry">
-                              <rect>
-                                    <x>360</x>
-                                    <y>0</y>
-                                    <width>541</width>
-                                    <height>461</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(255, 210, 184)</string>
-                        </property>
-                        <property name="currentIndex">
-                              <number>0</number>
-                        </property>
-                        <widget class="QWidget" name="tab_3">
-                              <attribute name="title">
-                                    <string>Kinect</string>
-                              </attribute>
-                              <widget class="QPushButton" name="btn_Image_1_save">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>470</x>
-                                                <y>10</y>
-                                                <width>51</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>save</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_getImage">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>10</y>
-                                                <width>351</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Kinect color</string>
-                                    </property>
-                              </widget>
-                              <widget class="QLabel" name="img_main">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>40</y>
-                                                <width>512</width>
-                                                <height>384</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(46, 52, 54)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>img_main</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_stopImage">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>370</x>
-                                                <y>10</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>stop</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                        <widget class="QWidget" name="tab_4">
-                              <attribute name="title">
-                                    <string>Upper Camera 1</string>
-                              </attribute>
-                              <widget class="QPushButton" name="btn_getImage_upperCamera1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>10</y>
-                                                <width>351</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Upper camera1</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_stopImage_upperCamera1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>370</x>
-                                                <y>10</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>stop</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_Image_save_upperCamera1">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>470</x>
-                                                <y>10</y>
-                                                <width>51</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>save</string>
-                                    </property>
-                              </widget>
-                              <widget class="QLabel" name="img_main_3">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>40</y>
-                                                <width>512</width>
-                                                <height>384</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(46, 52, 54)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>img_main</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                        <widget class="QWidget" name="tab_6">
-                              <attribute name="title">
-                                    <string>Upper Camera 2</string>
-                              </attribute>
-                              <widget class="QLabel" name="img_main_4">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>40</y>
-                                                <width>512</width>
-                                                <height>384</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(46, 52, 54)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>img_main_4</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_Image_save_upperCamera2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>470</x>
-                                                <y>10</y>
-                                                <width>51</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>save</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_getImage_upperCamera2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>10</x>
-                                                <y>10</y>
-                                                <width>351</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>Upper camera2</string>
-                                    </property>
-                              </widget>
-                              <widget class="QPushButton" name="btn_stopImage_upperCamera2">
-                                    <property name="geometry">
-                                          <rect>
-                                                <x>370</x>
-                                                <y>10</y>
-                                                <width>89</width>
-                                                <height>25</height>
-                                          </rect>
-                                    </property>
-                                    <property name="styleSheet">
-                                          <string notr="true">background-color:rgb(184, 184, 184)</string>
-                                    </property>
-                                    <property name="text">
-                                          <string>stop</string>
-                                    </property>
-                              </widget>
-                        </widget>
-                  </widget>
-                  <widget class="QPushButton" name="pushButton_clear_execute">
-                        <property name="geometry">
-                              <rect>
-                                    <x>10</x>
-                                    <y>580</y>
-                                    <width>89</width>
-                                    <height>25</height>
-                              </rect>
-                        </property>
-                        <property name="styleSheet">
-                              <string notr="true">background-color:rgb(184, 184, 184)</string>
-                        </property>
-                        <property name="text">
-                              <string>Clear</string>
-                        </property>
-                  </widget>
-            </widget>
-            <widget class="QMenuBar" name="menuBar">
-                  <property name="geometry">
-                        <rect>
-                              <x>0</x>
-                              <y>0</y>
-                              <width>1385</width>
-                              <height>22</height>
-                        </rect>
-                  </property>
-            </widget>
-            <widget class="QToolBar" name="mainToolBar">
-                  <attribute name="toolBarArea">
-                        <enum>TopToolBarArea</enum>
-                  </attribute>
-                  <attribute name="toolBarBreak">
-                        <bool>false</bool>
-                  </attribute>
-            </widget>
-            <widget class="QStatusBar" name="statusBar" />
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1385</width>
+    <height>1057</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(211, 215, 207)</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="pushButton_voice_cmd">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(56, 83, 105)</string>
+    </property>
+    <property name="text">
+     <string>Voice Command</string>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableView_ab">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>341</width>
+      <height>91</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_voice">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>341</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(158, 197, 230)</string>
+    </property>
+    <property name="documentTitle">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget_cmd">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>10</y>
+      <width>451</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(164, 191, 176)</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>TM</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>60</y>
+        <width>71</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="tm_pos_x">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_y">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_z">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Rx">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Ry">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Rz">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget1">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>60</y>
+        <width>31</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="tm_pos_x_2">
+         <property name="text">
+          <string>x:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_y_2">
+         <property name="text">
+          <string>y:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_z_2">
+         <property name="text">
+          <string>z:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Rx_2">
+         <property name="text">
+          <string>Rx:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Ry_2">
+         <property name="text">
+          <string>Ry:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_pos_Rz_2">
+         <property name="text">
+          <string>Rz:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="btn_get_tm_pos">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Get TM srv</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_1">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>440</y>
+        <width>89</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos out</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>460</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos 2</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_3">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>340</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos mid</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_get_tm_img">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>0</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Get Image</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_4">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>370</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos cam</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_5">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>400</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos pregrip</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_6">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>430</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Posgrip</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_7">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>460</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos up</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_8">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>490</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos mid</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_grip">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>440</y>
+        <width>61</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(135, 166, 204)</string>
+      </property>
+      <property name="text">
+       <string>Grip</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_unGrip">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>470</y>
+        <width>61</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(135, 166, 204)</string>
+      </property>
+      <property name="text">
+       <string>UnGrip</string>
+      </property>
+     </widget>
+     <widget class="QSplitter" name="splitter">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>60</y>
+        <width>71</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_0">
+       <property name="text">
+        <string>0</string>
+       </property>
       </widget>
-      <layoutdefault spacing="6" margin="11" />
-      <resources />
-      <connections />
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_1">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_2">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_3">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_4">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_tm_cmd_5">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_servo_trackPose">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>280</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(179, 86, 39)</string>
+      </property>
+      <property name="text">
+       <string>Servo trackPose</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_servo_stop">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>350</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(179, 86, 39)</string>
+      </property>
+      <property name="text">
+       <string>Stop servo</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tf_tracker">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>240</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(42, 145, 85)</string>
+      </property>
+      <property name="text">
+       <string>Set Tracker</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_tracker_offset_x">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>60</y>
+        <width>48</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-100</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_tracker_offset_y">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>60</y>
+        <width>48</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-100</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>40</y>
+        <width>121</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>offset x  y (mm)</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_preTrack">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>110</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>Pos pre track</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>60</y>
+        <width>71</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="tm_joint_j0">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_joint_j1">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_joint_j2">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_joint_j3">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_joint_j4">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="tm_joint_j5">
+         <property name="text">
+          <string>000.000</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>40</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pose(mm)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>40</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint(deg)</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_joint">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>30</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Go joint</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_copy_joint">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>60</y>
+        <width>15</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(157, 176, 155)</string>
+      </property>
+      <property name="text">
+       <string>&gt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_copy_pose">
+      <property name="geometry">
+       <rect>
+        <x>109</x>
+        <y>60</y>
+        <width>15</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(157, 176, 155)</string>
+      </property>
+      <property name="text">
+       <string>&gt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pose">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>330</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Go pose</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_real_move">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>210</y>
+        <width>121</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_real_move">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>210</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Simulate</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>NewEra</string>
+     </attribute>
+     <widget class="QPushButton" name="pushButton_NE_light">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Blink light</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_moveLittle">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>70</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Move little</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_break">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>470</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Break</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_releaseBreak">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>430</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>unBreak</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_moveF">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>120</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Go Frount</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_moveB">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>150</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Go back</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_get_pose">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>20</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Get Pose</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_goto_A">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>150</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Go to A</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_NE_goto_WS">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>180</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Go to WS</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>TF transform</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_set_tf2_tm_base">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(42, 145, 85)</string>
+      </property>
+      <property name="text">
+       <string>Set tf
+TM/base </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tm_pos_setTF">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>111</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(120, 161, 92)</string>
+      </property>
+      <property name="text">
+       <string>go set TF</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tf2_upper_camera1">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>20</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(42, 145, 85)</string>
+      </property>
+      <property name="text">
+       <string>Set tf 
+upper_camera1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_set_tf2_upper_camera2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>70</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(42, 145, 85)</string>
+      </property>
+      <property name="text">
+       <string>Set tf 
+upper_camera2</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_7">
+     <attribute name="title">
+      <string>Hack mode</string>
+     </attribute>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Voice command</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_hack_voice_cmd">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>311</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(158, 197, 230)</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_ros_spin">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>570</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(235, 128, 61)</string>
+    </property>
+    <property name="text">
+     <string>ROS Spin()</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_voice_cmd_stop">
+    <property name="geometry">
+     <rect>
+      <x>198</x>
+      <y>0</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(56, 83, 105)</string>
+    </property>
+    <property name="text">
+     <string>stop</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_getImage_2">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>470</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>track Image</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="img_main_2">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>500</y>
+      <width>512</width>
+      <height>384</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(46, 52, 54)</string>
+    </property>
+    <property name="text">
+     <string>img_main</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_creatActionBase">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>301</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(56, 83, 105)</string>
+    </property>
+    <property name="text">
+     <string>NLP</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_tm_execute_nlp">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(179, 86, 39)</string>
+    </property>
+    <property name="text">
+     <string>Execute</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_grippingObject">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>350</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Gripping Object :</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_execute_msg">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>341</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_Image_2_save">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>470</y>
+      <width>51</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>save</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_test1">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>570</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(235, 128, 61)</string>
+    </property>
+    <property name="text">
+     <string>Test1</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_tm_msg">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>620</y>
+      <width>431</width>
+      <height>171</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_clearTmMsg">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>800</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>Clear</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_stopImage_2">
+    <property name="geometry">
+     <rect>
+      <x>768</x>
+      <y>470</y>
+      <width>61</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>stop</string>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget_image_picker">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>0</y>
+      <width>541</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(255, 210, 184)</string>
+    </property>
+    <property name="currentIndex">
+     <number>3</number>
+    </property>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Kinect</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_Image_1_save">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>10</y>
+        <width>51</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>save</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_getImage">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>351</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Kinect color</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="img_main">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>512</width>
+        <height>384</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(46, 52, 54)</string>
+      </property>
+      <property name="text">
+       <string>img_main</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_stopImage">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>stop</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Upper Camera 1</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_getImage_upperCamera1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>351</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Upper camera1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_stopImage_upperCamera1">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>stop</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_Image_save_upperCamera1">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>10</y>
+        <width>51</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>save</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="img_main_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>512</width>
+        <height>384</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(46, 52, 54)</string>
+      </property>
+      <property name="text">
+       <string>img_main</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Upper Camera 2</string>
+     </attribute>
+     <widget class="QLabel" name="img_main_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>512</width>
+        <height>384</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(46, 52, 54)</string>
+      </property>
+      <property name="text">
+       <string>img_main_4</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_Image_save_upperCamera2">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>10</y>
+        <width>51</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>save</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_getImage_upperCamera2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>351</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Upper camera2</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_stopImage_upperCamera2">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>stop</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_8">
+     <attribute name="title">
+      <string>TM_cam</string>
+     </attribute>
+     <widget class="QLabel" name="img_main_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>512</width>
+        <height>384</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(46, 52, 54)</string>
+      </property>
+      <property name="text">
+       <string>img_main_5</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_getImage_tm_cam">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>511</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(184, 184, 184)</string>
+      </property>
+      <property name="text">
+       <string>Get TM camera</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_clear_execute">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>580</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>Clear</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_observe_1">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>470</y>
+      <width>281</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_reload_image_topic">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>470</y>
+      <width>31</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(184, 184, 184)</string>
+    </property>
+    <property name="text">
+     <string>⭯</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1385</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
 </ui>

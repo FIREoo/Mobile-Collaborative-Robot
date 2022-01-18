@@ -170,7 +170,9 @@ add_executable(userUi
     src/userUi/mainwindow.ui
     src/userUi/mainwindow.cpp
     src/userUi/main.cpp
-    src/userUi/subclass.cpp
+    src/userUi/partial_nlp.cpp
+    src/userUi/partial_M03.cpp
+    src/userUi/tmrobot.cpp
 )
 
 

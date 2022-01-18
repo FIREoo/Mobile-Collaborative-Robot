@@ -25,7 +25,7 @@
     <group>
         <!-- AVerMedia PW313D (L) 1920*1080 (6) -->
         <arg name="device_id" default="upper_camera1" /> <!-- device name-->
-        <arg name="device_index" default="4" /> <!-- VideoCapture index-->
+        <arg name="device_index" default="6" /> <!-- VideoCapture index-->
         <arg name="image_width" default="1920" /> <!-- Camera width-->
         <arg name="image_height" default="1080" /> <!-- Camera height-->
 
@@ -58,7 +58,7 @@
     <group>
         <!-- AVerMedia PW313D (R) 2592*1944 (2) -->
         <arg name="device_id" default="upper_camera2" /> <!-- device name-->
-        <arg name="device_index" default="2" /> <!-- VideoCapture index-->
+        <arg name="device_index" default="0" /> <!-- VideoCapture index-->
         <arg name="image_width" default="2592" /> <!-- Camera width-->
         <arg name="image_height" default="1944" /> <!-- Camera height-->
 
