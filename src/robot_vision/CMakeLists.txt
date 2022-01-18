@@ -32,6 +32,7 @@ roslaunch_add_file_check(launch)
 add_message_files(
   FILES
   YoloBoundingBox.msg
+  ArUcoList.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -96,8 +97,8 @@ add_executable(tf_boardcast src/tf_boardcast.cpp)
 target_link_libraries(tf_boardcast ${catkin_LIBRARIES})
 add_dependencies(tf_boardcast ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(draw_map src/draw_map.cpp) 
-target_link_libraries(draw_map ${catkin_LIBRARIES})
+add_executable(aruco_organize src/aruco_organize.cpp) 
+target_link_libraries(aruco_organize ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############

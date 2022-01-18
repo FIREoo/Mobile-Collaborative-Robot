@@ -16,14 +16,17 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <robot_vision/ArUcoList.h>
 #include <robot_vision/RotationTools.h>
 namespace Rt = Rotation;
 
 std::string frame_id;
-// ros::Publisher pub_aruco;
+
+ros::Publisher pub_aruco;
+robot_vision::ArUcoList aruco_list;
+
 image_transport::Subscriber sub;
 image_transport::Publisher pub_aurcoImage;
-ros::Publisher pub_aurco0_pose;
 
 double fx = 978.451;
 double fy = 978.683;
@@ -41,10 +44,36 @@ double k4 = 0.241069;
 double k5 = -2.30814;
 double k6 = 1.36445;
 
+void pushArUco(uint16_t _dict, uint16_t _id, double _translation_x, double _translation_y, double _translation_z, double _rotation_x, double _rotation_y, double _rotation_z, double _rotation_w)
+{
+    aruco_list.dict.push_back(_dict);
+    aruco_list.id.push_back(_id);
+    aruco_list.translation_x.push_back(_translation_x);
+    aruco_list.translation_y.push_back(_translation_y);
+    aruco_list.translation_z.push_back(_translation_z);
+    aruco_list.rotation_x.push_back(_rotation_x);
+    aruco_list.rotation_y.push_back(_rotation_y);
+    aruco_list.rotation_z.push_back(_rotation_z);
+    aruco_list.rotation_w.push_back(_rotation_w);
+}
+void clearArUco()
+{
+    aruco_list.dict.clear();
+    aruco_list.id.clear();
+    aruco_list.translation_x.clear();
+    aruco_list.translation_y.clear();
+    aruco_list.translation_z.clear();
+    aruco_list.rotation_x.clear();
+    aruco_list.rotation_y.clear();
+    aruco_list.rotation_z.clear();
+    aruco_list.rotation_w.clear();
+}
+
 void img_callback(const sensor_msgs::ImageConstPtr &msg)
 {
     try
     {
+        clearArUco();
         //cv::Mat getImg = cv_bridge::toCvCopy(msg, "bgr8")->image;//for sensor_msgs::CompressedImageConstPtr
         cv::Mat getImg = cv_bridge::toCvShare(msg, "bgr8")->image;
 
@@ -109,6 +138,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
                 transformStamped.transform.rotation.z = q.z();
                 transformStamped.transform.rotation.w = q.w();
                 broadcaster.sendTransform(transformStamped);
+                pushArUco(5, ids_5x5[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
             }
         }
         if (ids_4x4.size() > 0)
@@ -152,8 +182,12 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
                 transformStamped.transform.rotation.z = q.z();
                 transformStamped.transform.rotation.w = q.w();
                 broadcaster.sendTransform(transformStamped);
+                pushArUco(4, ids_4x4[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
             }
         }
+        if (aruco_list.dict.size() != 0)
+            pub_aruco.publish(aruco_list);
+
         sensor_msgs::ImagePtr msg_out = cv_bridge::CvImage(std_msgs::Header(), "bgr8", showImg).toImageMsg();
         pub_aurcoImage.publish(msg_out);
     }
@@ -187,7 +221,7 @@ int main(int argc, char **argv)
     ros::Subscriber sub = nh.subscribe("/source_image", 1, img_callback);
 
     pub_aurcoImage = it.advertise(sub.getTopic() + "/aruco", 1);
-    // pub_aurco0_pose = n.advertise<geometry_msgs::Pose>("img_process/track/aruco/5x5/0", 1);
+    pub_aruco = nh.advertise<robot_vision::ArUcoList>(frame_id + "/aruco/list", 1);
 
     ros::spin();
 }

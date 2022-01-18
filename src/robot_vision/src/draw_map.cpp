@@ -32,6 +32,7 @@ class PoseDrawer
         tf2_(buffer_), target_frame_("TM_robot/base"),
         tf2_filter_(point_sub_, buffer_, target_frame_, 10, 0)
     {
+        ROS_INFO("Go");
         point_sub_.subscribe(n_, "turtle_point_stamped", 10);
         tf2_filter_.registerCallback(boost::bind(&PoseDrawer::msgCallback, this, _1));
     }

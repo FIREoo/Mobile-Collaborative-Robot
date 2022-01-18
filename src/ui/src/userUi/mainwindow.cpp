@@ -1598,30 +1598,4 @@ void MainWindow::on_pushButton_ros_spin_clicked()
 
 void MainWindow::on_pushButton_test1_clicked()
 {
-    static tf2_ros::TransformBroadcaster br;
-    geometry_msgs::TransformStamped transformStamped;
-
-    transformStamped.header.stamp = ros::Time::now();//transform_target.header.stamp;
-    transformStamped.header.frame_id = "upper_camera2/track/aruco/5x5/5";
-    transformStamped.child_frame_id = "upper_camera2/track/aruco/5x5/5/TM_base";
-    transformStamped.transform.translation.x = -0.225;
-    transformStamped.transform.translation.y = 0.21;
-    transformStamped.transform.translation.z = 0.0;
-    tf2::Quaternion quat;
-    quat.setRPY(0, 0, M_PI + M_PI_4);
-    transformStamped.transform.rotation.x = quat.x();
-    transformStamped.transform.rotation.y = quat.y();
-    transformStamped.transform.rotation.z = quat.z();
-    transformStamped.transform.rotation.w = quat.w();
-    br.sendTransform(transformStamped);
-
-    geometry_msgs::TransformStamped transform_target;
-    transform_target = lookupTransform("world", "upper_camera2/track/aruco/5x5/5/TM_base");
-
-    static tf2_ros::StaticTransformBroadcaster static_broadcaster;
-
-    transform_target.header.stamp = ros::Time::now();
-    transform_target.header.frame_id = "world";
-    transform_target.child_frame_id = "TM_robot/base";
-    static_broadcaster.sendTransform(transform_target);
 }
