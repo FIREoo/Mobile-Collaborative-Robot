@@ -3,7 +3,6 @@
 #include <geometry_msgs/Pose.h>
 #include <image_transport/image_transport.h>
 #include <iostream>
-#include <robot_vision/YoloBoundingBox.h>
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/PointField.h>
@@ -12,6 +11,7 @@
 #include <sensor_msgs/point_cloud2_iterator.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
+#include <vision_msg/YoloBoundingBox.h>
 
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core/core.hpp>
@@ -122,7 +122,7 @@ void pointCloud2_Callback(const sensor_msgs::PointCloud2ConstPtr &msg)
 }
 
 /*YOLO*/
-void yolo_Callback(const robot_vision::YoloBoundingBoxConstPtr &msg)
+void yolo_Callback(const vision_msg::YoloBoundingBoxConstPtr &msg)
 {
     std::string name = std::string(msg->object_name);
     int x = uint16_t(msg->x);

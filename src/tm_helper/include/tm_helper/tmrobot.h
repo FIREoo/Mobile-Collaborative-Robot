@@ -1,17 +1,19 @@
 #ifndef TMROBOT_H
 #define TMROBOT_H
 
-#include <QAbstractItemView>
-#include <QMainWindow>
-#include <QStandardItemModel>
-#include <QStringList>
-#include <QStringListModel>
+// #include <QAbstractItemView>
+// #include <QMainWindow>
+// #include <QStandardItemModel>
+// #include <QStringList>
+// #include <QStringListModel>
+#include <QtWidgets/QApplication>
 #include <map>
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "tm_msgs/ConnectTM.h"
 #include "tm_msgs/FeedbackState.h"
+#include "tm_msgs/SendScript.h"
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
 #include <image_transport/image_transport.h>
@@ -22,10 +24,17 @@
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-
+// #include <opencv2/core/core.hpp>
+// #include <opencv2/highgui/highgui.hpp>
+// #include <opencv2/imgproc/imgproc.hpp>
+#define STOP_MODE 0
+#define JOINT_MODE 1
+#define POSE_MODE 2
+#define SERVO_POSE_MODE 3
+#define SERVO_JOINT_MODE 4
+#define SERVO_POSE_TEST 5
+#define SERVO_NA 666
+#define SERVO_NA_mm 666000
 
 /**
  * @brief Tool space (Unit: meters degrees)
@@ -70,6 +79,8 @@ class TmRobot
 {
   private:
     ros::NodeHandle nh;
+    ros::Publisher pub_jog;
+    int jog_mode;
 
   public:
     TmRobot();
@@ -78,8 +89,17 @@ class TmRobot
     bool moveTo(TmPose tcp, int speed_percent, bool block, bool print);
     bool moveTo(TmJoint joint, int speed_percent, bool block, bool print);
 
+    void set_jog_mode(std::string joint_or_pose, bool set_mode);//velocity_mode
+    bool jog(TmPose tcp, int speed_percent, bool print = true);
+    bool jog(TmJoint joint, int speed_percent, bool print = true);
+
+    void set_servo_mode(std::string joint_or_pose, bool set_mode);
+    void test_servo_mode(std::string joint_or_pose, bool set_mode);
+    bool servo(TmPose tcp, int speed_percent, bool print = true);
+    bool servo_test(TmPose tcp, int speed_percent, bool print = true);
     TmPose tcp_pose;
     TmPose tcp_speed;
+    TmPose tcp_force;
     TmJoint axis_joint;
 };
 

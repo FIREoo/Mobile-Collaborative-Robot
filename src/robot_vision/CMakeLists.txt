@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   tm_msgs
   geometry_msgs
   tf
+  # robot_vision
+  vision_msg
 )
 
 roslaunch_add_file_check(launch)
@@ -29,11 +31,11 @@ roslaunch_add_file_check(launch)
 ################################################
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  YoloBoundingBox.msg
-  ArUcoList.msg
-)
+# add_message_files(
+#   FILES
+#   YoloBoundingBox.msg
+#   ArUcoList.msg
+# )
 
 ## Generate services in the 'srv' folder
 add_service_files(

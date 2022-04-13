@@ -1,7 +1,10 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+// #include "mainwindow.h"
+// #include "ui_mainwindow.h"
 
-#include "tmrobot.h"
+#include "tm_helper/tmrobot.h"
+#include <std_srvs/Empty.h>
+
+#define SERVO_NA 666
 
 //*****TM Pose*****//
 TmPose::TmPose()
@@ -207,6 +210,8 @@ std::string TmJoint::ToString()
 //*****TM Robot*****//
 TmRobot::TmRobot()
 {
+    jog_mode = STOP_MODE;
+    pub_jog = nh.advertise<geometry_msgs::TwistStamped>("/tm_helper/jog", 1);
 }
 bool TmRobot::checkConnect()
 {
@@ -264,6 +269,12 @@ bool TmRobot::sendScript(std::string cmd, bool print /*= true*/)
 
 bool TmRobot::moveTo(TmPose tcp, int speed_percent, bool block, bool print)
 {
+    if (jog_mode != STOP_MODE)
+    {
+        ROS_INFO_STREAM("\033[0;32m[TM]\033[0m\033[3;31mmode error, should in STOP_MODE\033[0m");
+        return false;
+    }
+
     if (sendScript(tcp.ToCmdString(speed_percent), false))
     {
         if (print)
@@ -281,6 +292,7 @@ bool TmRobot::moveTo(TmPose tcp, int speed_percent, bool block, bool print)
                     break;
 
                 rate.sleep();
+                qApp->processEvents();//#include <QtWidgets/QApplication>
                 ros::spinOnce();
             }
         }
@@ -290,6 +302,11 @@ bool TmRobot::moveTo(TmPose tcp, int speed_percent, bool block, bool print)
 }
 bool TmRobot::moveTo(TmJoint joint, int speed_percent, bool block, bool print)
 {
+    if (jog_mode != STOP_MODE)
+    {
+        ROS_INFO_STREAM("\033[0;32m[TM]\033[0m\033[3;31mmode error, should in STOP_MODE\033[0m");
+        return false;
+    }
     if (sendScript(joint.ToCmdString(speed_percent), false))
     {
         if (print)
@@ -310,11 +327,170 @@ bool TmRobot::moveTo(TmJoint joint, int speed_percent, bool block, bool print)
                     break;
 
                 rate.sleep();
-                qApp->processEvents();
+                qApp->processEvents();//#include <QtWidgets/QApplication>
                 ros::spinOnce();
             }
         }
         return true;
     }
     return false;
+}
+
+
+void TmRobot::set_jog_mode(std::string joint_or_pose, bool set_mode)
+{
+    if (set_mode == true)
+    {
+        if (joint_or_pose == "pose")
+        {
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/jog/start/pose");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = POSE_MODE;
+        }
+        else if (joint_or_pose == "joint")
+        {
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/jog/start/joint");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = JOINT_MODE;
+        }
+        else//input error
+        {   //stop
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/jog/stop");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = STOP_MODE;
+        }
+    }
+    else
+    {
+        ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/jog/stop");
+        std_srvs::Empty n;
+        if (client.call(n))
+            jog_mode = STOP_MODE;
+    }
+}
+bool TmRobot::jog(TmPose tcp, int speed_percent, bool print /*=true*/)
+{
+    if (jog_mode != POSE_MODE)
+    {
+        ROS_INFO_STREAM("\033[0;32m[TM]\033[0m\033[3;31mmode error, should in POSE_MODE\033[0m");
+        return false;
+    }
+    geometry_msgs::TwistStamped val;
+    val.twist.linear.x = tcp.x * speed_percent / 100;
+    val.twist.linear.y = tcp.y * speed_percent / 100;
+    val.twist.linear.z = tcp.z * speed_percent / 100;
+    val.twist.angular.x = tcp.Rx * speed_percent / 100;
+    val.twist.angular.y = tcp.Ry * speed_percent / 100;
+    val.twist.angular.z = tcp.Rz * speed_percent / 100;
+    val.header.stamp = ros::Time::now();
+    pub_jog.publish(val);
+    return true;
+    //return sendScript("SetContinueVLine(" + std::to_string(tcp.x * speed_percent / 100) + "," + std::to_string(tcp.y * speed_percent / 100) + "," + std::to_string(tcp.z * speed_percent / 100) + "," + std::to_string(tcp.Rx * speed_percent / 100) + "," + std::to_string(tcp.Ry * speed_percent / 100) + "," + std::to_string(tcp.Rz * speed_percent / 100) + ")", print);
+}
+bool TmRobot::jog(TmJoint joint, int speed_percent, bool print /*=true*/)
+{
+    if (jog_mode != JOINT_MODE)
+    {
+        ROS_INFO_STREAM("\033[0;32m[TM]\033[0m\033[3;31mmode error, should in JOINT_MODE\033[0m");
+        return false;
+    }
+    geometry_msgs::TwistStamped val;
+    val.twist.linear.x = joint.j0 * speed_percent / 100;
+    val.twist.linear.y = joint.j1 * speed_percent / 100;
+    val.twist.linear.z = joint.j2 * speed_percent / 100;
+    val.twist.angular.x = joint.j3 * speed_percent / 100;
+    val.twist.angular.y = joint.j4 * speed_percent / 100;
+    val.twist.angular.z = joint.j5 * speed_percent / 100;
+    val.header.stamp = ros::Time::now();
+    pub_jog.publish(val);
+
+    return true;
+    // return sendScript("SetContinueVJog(" + std::to_string(joint.j0 * speed_percent / 100) + "," + std::to_string(joint.j1 * speed_percent / 100) + "," + std::to_string(joint.j2 * speed_percent / 100) + "," + std::to_string(joint.j3 * speed_percent / 100) + "," + std::to_string(joint.j4 * speed_percent / 100) + "," + std::to_string(joint.j5 * speed_percent / 100) + ")", print);
+}
+
+void TmRobot::set_servo_mode(std::string joint_or_pose, bool set_mode)
+{
+    if (set_mode == true)
+    {
+        if (joint_or_pose == "pose")
+        {
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/start/pose");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = SERVO_POSE_MODE;
+        }
+        else if (joint_or_pose == "joint")
+        {
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/start/joint");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = SERVO_JOINT_MODE;
+        }
+        else//input error
+        {   //stop
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/stop");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = STOP_MODE;
+        }
+    }
+    else
+    {
+        ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/stop");
+        std_srvs::Empty n;
+        if (client.call(n))
+            jog_mode = STOP_MODE;
+    }
+}
+void TmRobot::test_servo_mode(std::string joint_or_pose, bool set_mode)
+{
+    if (set_mode == true)
+    {
+        if (joint_or_pose == "pose")
+        {
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/test/pose");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = SERVO_POSE_TEST;
+        }
+        else if (joint_or_pose == "joint")
+        {
+            ROS_INFO("not finish");
+        }
+        else//input error
+        {   //stop
+            ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/stop");
+            std_srvs::Empty n;
+            if (client.call(n))
+                jog_mode = STOP_MODE;
+        }
+    }
+    else
+    {
+        ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("tm_helper/servo/stop");
+        std_srvs::Empty n;
+        if (client.call(n))
+            jog_mode = STOP_MODE;
+    }
+}
+bool TmRobot::servo(TmPose tcp, int speed_percent, bool print /*=true*/)
+{
+    if (jog_mode != SERVO_POSE_MODE && jog_mode != SERVO_POSE_TEST)
+    {
+        ROS_INFO_STREAM("\033[0;32m[TM]\033[0m\033[3;31mmode error, should in SERVO_POSE_MODE\033[0m");
+        return false;
+    }
+    geometry_msgs::TwistStamped val;
+    val.twist.linear.x = tcp.x * speed_percent / 100;
+    val.twist.linear.y = tcp.y * speed_percent / 100;
+    val.twist.linear.z = tcp.z * speed_percent / 100;
+    val.twist.angular.x = tcp.Rx * speed_percent / 100;
+    val.twist.angular.y = tcp.Ry * speed_percent / 100;
+    val.twist.angular.z = tcp.Rz * speed_percent / 100;
+    val.header.stamp = ros::Time::now();
+    pub_jog.publish(val);
+    return true;
 }

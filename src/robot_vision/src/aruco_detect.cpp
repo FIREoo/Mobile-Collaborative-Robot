@@ -16,14 +16,14 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include <robot_vision/ArUcoList.h>
 #include <robot_vision/RotationTools.h>
+#include <vision_msg/ArUcoList.h>
 namespace Rt = Rotation;
 
 std::string frame_id;
 
 ros::Publisher pub_aruco;
-robot_vision::ArUcoList aruco_list;
+vision_msg::ArUcoList aruco_list;
 
 image_transport::Subscriber sub;
 image_transport::Publisher pub_aurcoImage;
@@ -44,8 +44,9 @@ double k4 = 0.241069;
 double k5 = -2.30814;
 double k6 = 1.36445;
 
-void pushArUco(uint16_t _dict, uint16_t _id, double _translation_x, double _translation_y, double _translation_z, double _rotation_x, double _rotation_y, double _rotation_z, double _rotation_w)
+void pushArUco(std::string frame_id, uint16_t _dict, uint16_t _id, double _translation_x, double _translation_y, double _translation_z, double _rotation_x, double _rotation_y, double _rotation_z, double _rotation_w)
 {
+    aruco_list.frame_id.push_back(frame_id);
     aruco_list.dict.push_back(_dict);
     aruco_list.id.push_back(_id);
     aruco_list.translation_x.push_back(_translation_x);
@@ -58,6 +59,7 @@ void pushArUco(uint16_t _dict, uint16_t _id, double _translation_x, double _tran
 }
 void clearArUco()
 {
+    aruco_list.frame_id.clear();
     aruco_list.dict.clear();
     aruco_list.id.clear();
     aruco_list.translation_x.clear();
@@ -138,7 +140,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
                 transformStamped.transform.rotation.z = q.z();
                 transformStamped.transform.rotation.w = q.w();
                 broadcaster.sendTransform(transformStamped);
-                pushArUco(5, ids_5x5[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
+                pushArUco(frame_id, 5, ids_5x5[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
             }
         }
         if (ids_4x4.size() > 0)
@@ -182,7 +184,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &msg)
                 transformStamped.transform.rotation.z = q.z();
                 transformStamped.transform.rotation.w = q.w();
                 broadcaster.sendTransform(transformStamped);
-                pushArUco(4, ids_4x4[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
+                pushArUco(frame_id, 4, ids_4x4[i], tvecs[i].val[0], tvecs[i].val[1], tvecs[i].val[2], q.x(), q.y(), q.z(), q.w());
             }
         }
         if (aruco_list.dict.size() != 0)
@@ -200,7 +202,6 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "aruco_detect");
     ros::NodeHandle nh;
-
     ros::param::get("~frame_id", frame_id);
     ros::param::get("~fx", fx);
     ros::param::get("~fy", fy);
@@ -221,7 +222,7 @@ int main(int argc, char **argv)
     ros::Subscriber sub = nh.subscribe("/source_image", 1, img_callback);
 
     pub_aurcoImage = it.advertise(sub.getTopic() + "/aruco", 1);
-    pub_aruco = nh.advertise<robot_vision::ArUcoList>(frame_id + "/aruco/list", 1);
+    pub_aruco = nh.advertise<vision_msg::ArUcoList>(frame_id + "/aruco/list", 1);
 
     ros::spin();
 }

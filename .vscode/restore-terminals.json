@@ -59,8 +59,9 @@
         {
           "name": "UI",
           "commands": [
-            "ROS"
-          ]
+            "source ~/Desktop/bash/myros_ui.bash"
+          ],
+          "shouldRunCommands": false
         }
       ]
     }

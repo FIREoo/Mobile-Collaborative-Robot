@@ -9,7 +9,7 @@ from std_msgs.msg import String, Int32MultiArray, Float64MultiArray
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Polygon
-from robot_vision.msg import YoloBoundingBox
+from vision_msg.msg import YoloBoundingBox
 
 
 def img_callback(data):

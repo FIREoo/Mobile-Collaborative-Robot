@@ -54,6 +54,17 @@ SubscribeThreadHandle::SubscribeThreadHandle(void (MainWindow::*pFunc)(std::stri
     V0 = v0;
     V1 = v1;
 }
+SubscribeThreadHandle::SubscribeThreadHandle(void (MainWindow::*pFunc)(double, double, double, double, double, double), double v0, double v1, double v2, double v3, double v4, double v5, MainWindow *obj)
+{
+    _pFunc6 = pFunc;
+    _obj = obj;
+    V0 = v0;
+    V1 = v1;
+    V2 = v2;
+    V3 = v3;
+    V4 = v4;
+    V5 = v5;
+}
 SubscribeThreadHandle::~SubscribeThreadHandle()
 {
     ROS_INFO("shutdown!! subscriber");
@@ -88,7 +99,10 @@ void SubscribeThreadHandle::doFunction3()
 {
     (_obj->*_pFunc3)(S0, V0, V1);
 }
-
+void SubscribeThreadHandle::doFunction6()
+{
+    (_obj->*_pFunc6)(V0, V1, V2, V3, V4, V5);
+}
 #pragma endregion ___ThreadHandle___
 
 
@@ -114,6 +128,7 @@ MainWindow::MainWindow(QWidget *parent) :
     nlp_itemModel->setHeaderData(1, Qt::Horizontal, QString::fromLocal8Bit("Target"));
     nlp_itemModel->setHeaderData(2, Qt::Horizontal, QString::fromLocal8Bit("Destination"));
     ui->tableView_ab->setModel(nlp_itemModel);
+
     // Alignment => Left
     ui->tableView_ab->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
     for (int i = 0; i < nlp_itemModel->rowCount(); i++)
@@ -121,12 +136,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     NewEra_speed_pub = nh.advertise<const geometry_msgs::Twist>("/joystick_set_velocity", 10);
 
+    //UI initial
     realMove = false;
     ui->label_real_move->setText(setStringColor("Simulate", "#08783c"));
+    on_radioButton_mode_pose_clicked();
+
 
     //TM pose joint init
     tmj_outHome = TmJoint(0, 60, -120, -30, 90, -180, "deg");
     tmj_front = TmJoint(-10.5, 8.7, -11.5, -77.8, 34.6, -180, "deg");//p[-500,-300,300,90,0,-45]
+
     //hacked mode
     //combobox
     ui->comboBox_hack_voice_cmd->clear();
@@ -149,6 +168,13 @@ MainWindow::MainWindow(QWidget *parent) :
     map_sub_topic["/track/tracker/pose"] = ros::Subscriber();
     map_sub_topic["/upper_camera1/image"] = ros::Subscriber();
     map_sub_topic["/upper_camera2/image"] = ros::Subscriber();
+
+    //pub_jog_cmd = nh.advertise<geometry_msgs::Twist>("/tm_helper/jog", 2);
+
+    FLAG.robot_space = TOOL_SPACE;
+    jog_speed_percent = 100;
+    jog_speed_pose = 10;
+    jog_speed_joint = 10;
 }
 MainWindow::~MainWindow()
 {
@@ -335,7 +361,6 @@ void MainWindow::on_btn_stopImage_clicked()
     ui->img_main->setPixmap(QPixmap::fromImage(QImage(showImg.data, showImg.cols, showImg.rows, showImg.step, QImage::Format_RGB888)));
 }
 
-
 void MainWindow::on_pushButton_reload_image_topic_clicked()
 {
     ui->comboBox_observe_1->clear();
@@ -449,6 +474,17 @@ void MainWindow::TM_pos_Callback(const tm_msgs::FeedbackState::ConstPtr &msg)
             // tm_tcp_speed_x = msg->tcp_speed[0];
             // tm_tcp_speed_y = msg->tcp_speed[1];
             // tm_tcp_speed_z = msg->tcp_speed[2];
+        }
+        // ROS_INFO_STREAM("size force:" + std::to_string(msg->tcp_force.size()));
+        if (msg->tcp_force.size() == 3)
+        {
+            tm.tcp_force.x = msg->tcp_force[0];
+            tm.tcp_force.y = msg->tcp_force[1];
+            tm.tcp_force.z = msg->tcp_force[2];
+            // tm.tcp_force.Rx = msg->tcp_force[3];
+            // tm.tcp_force.Ry = msg->tcp_force[4];
+            // tm.tcp_force.Rz = msg->tcp_force[5];
+            // ROS_INFO_STREAM("X" + std::to_string(tm.tcp_force.x) + "\tY" + std::to_string(tm.tcp_force.y) + "\tZ" + std::to_string(tm.tcp_force.z));
         }
     }
     catch (const std::exception &e)
@@ -703,7 +739,6 @@ void MainWindow::on_btn_get_tm_img_clicked()
 }
 
 /*Tracker*/
-
 void MainWindow::publishTracker_msgFilter()
 {
 }
@@ -769,7 +804,7 @@ cv::Point2f MainWindow::getTrackPoint_blue()
 void MainWindow::on_btn_set_tf_tracker_clicked()
 {
     QThread *thread = new QThread();
-    std::string str = "yolo/hand";
+    std::string str = "track/blue";// "yolo/hand";
     double x = 0;
     double y = 0;
     SubscribeThreadHandle *thHandle = new SubscribeThreadHandle(&MainWindow::publishTracker, str, x, y, this);
@@ -787,11 +822,17 @@ void MainWindow::publishTracker(const std::string target_fram, const double x_of
 
     bool flag_firstIn = true;
     geometry_msgs::TransformStamped transform_target;
+    if (realMove)
+        tm.set_servo_mode("pose", true);
+    else
+        tm.test_servo_mode("pose", true);
+
     while (nh.ok() && servoing)
     {
         try
         {
-            transform_target = tfBuffer.lookupTransform("kinect", target_fram, ros::Time(0));
+            // transform_target = tfBuffer.lookupTransform("kinect", target_fram, ros::Time(0));
+            transform_target = tfBuffer.lookupTransform("TM_robot/base", target_fram, ros::Time(0));
             double sec = ros::Time::now().toSec() - transform_target.header.stamp.toSec();
             if (sec > 0.5)
             {
@@ -807,46 +848,41 @@ void MainWindow::publishTracker(const std::string target_fram, const double x_of
             x += x_offset;// M
             y += y_offset;// M
 
-            /*Publish tf tracker*/
-            // tf::Transform transform_out;
-            // transform_out.setOrigin(tf::Vector3(x, y, z));
-            // tf::Quaternion q;
-            // q.setRPY(0, 0, 0);
-            // transform_out.setRotation(q);
-            // br.sendTransform(tf::StampedTransform(transform_out, transform_target.header.stamp, "kinect", "track/tracker"));
-
             /*Publish tf2 tracker*/
-            static tf2_ros::TransformBroadcaster br;
-            geometry_msgs::TransformStamped transformStamped;
+            // static tf2_ros::TransformBroadcaster br;
+            // geometry_msgs::TransformStamped transformStamped;
 
-            transformStamped.header.stamp = ros::Time::now();//transform_target.header.stamp;
-            transformStamped.header.frame_id = "kinect";
-            transformStamped.child_frame_id = "track/tracker";
-            transformStamped.transform.translation.x = x;
-            transformStamped.transform.translation.y = y;
-            transformStamped.transform.translation.z = z;
-            transformStamped.transform.rotation.x = 0;
-            transformStamped.transform.rotation.y = 0;
-            transformStamped.transform.rotation.z = 0;
-            transformStamped.transform.rotation.w = 1;
+            // transformStamped.header.stamp = ros::Time::now();//transform_target.header.stamp;
+            // transformStamped.header.frame_id = "kinect";
+            // transformStamped.child_frame_id = "track/tracker";
+            // transformStamped.transform.translation.x = x;
+            // transformStamped.transform.translation.y = y;
+            // transformStamped.transform.translation.z = z;
+            // transformStamped.transform.rotation.x = 0;
+            // transformStamped.transform.rotation.y = 0;
+            // transformStamped.transform.rotation.z = 0;
+            // transformStamped.transform.rotation.w = 1;
 
-            br.sendTransform(transformStamped);
+            // br.sendTransform(transformStamped);
+
+            //tm servo
+            tm.servo(TmPose(x, y, SERVO_NA, SERVO_NA, SERVO_NA, SERVO_NA, "M", "deg"), 100, true);
 
             /*Publish tracker*/
-            geometry_msgs::Pose msg_pose;
-            msg_pose.position.x = x;
-            msg_pose.position.y = y;
-            msg_pose.position.z = z;
-            pub_tracker.publish(msg_pose);
+            // geometry_msgs::Pose msg_pose;
+            // msg_pose.position.x = x;
+            // msg_pose.position.y = y;
+            // msg_pose.position.z = z;
+            // pub_tracker.publish(msg_pose);
 
-            if (flag_firstIn)
-            {
-                ROS_INFO("\033[0;33m=====Boardcasting=====\033[0m");
-                ROS_INFO_STREAM("-- kinect->track/tracker");
-                ROS_INFO_STREAM("-- from" + target_fram + "\n");
-                addItem(msg_tm_listModel, "=====Boardcasting=====\n-- kinect->track/tracker\n");
-                flag_firstIn = false;
-            }
+            // if (flag_firstIn)
+            // {
+            //     ROS_INFO("\033[0;33m=====Boardcasting=====\033[0m");
+            //     ROS_INFO_STREAM("-- kinect->track/tracker");
+            //     ROS_INFO_STREAM("-- from" + target_fram + "\n");
+            //     addItem(msg_tm_listModel, "=====Boardcasting=====\n-- kinect->track/tracker\n");
+            //     flag_firstIn = false;
+            // }
         }
         catch (tf2::TransformException &ex)
         {
@@ -868,107 +904,6 @@ void MainWindow::on_btn_set_tm_pos_preTrack_clicked()
     sendCMD("PTP(\"CPP\",-450,-350,215,100,0,-45,100,200,0,false)", false);// mm-deg
 }
 void MainWindow::TM_servoOn(const string trackName, const double offset_x, const double offset_y)
-{
-    // safty check(need TF correction)
-    // if (tf_correction_check != 3)
-    // {
-    //     QMessageBox::about(NULL, "Error", "TF /kinect does not transform to /world");
-    //     return;
-    // }
-    // // safty function
-    // sendCMD("StopContinueVmode()");
-    // sendCMD("SuspendContinueVmode()");
-    // sleep(1);
-    // // start
-    // sendCMD("ContinueVLine(500,10000)");
-    // tf::TransformListener listener;
-    // ros::ServiceClient client = nh.serviceClient<tm_msgs::SendScript>("tm_driver/send_script");
-    // ros::Rate rate(3);
-    // servoing = true;
-    // while (nh.ok() && servoing)
-    // {
-    //     tf::StampedTransform transform;
-    //     try
-    //     {
-    //         double x = 0;
-    //         double y = 0;
-
-    //         listener.lookupTransform("/TM_robot", "/track/blue", ros::Time(0), transform);
-    //         x = transform.getOrigin().x();
-    //         y = transform.getOrigin().y();
-    //         // x += offset_x; // M
-    //         // y += offset_y; // M
-    //         x += -0.1;// M
-    //         y += 0.1; // M
-    //         // ROS_INFO_STREAM("vel\tx = " + std::to_string(x) + " y = " + std::to_string(y));
-    //         double a = 0.2;
-    //         double Vx = x + (a * x * x);
-    //         double Vy = y + (a * y * y);
-    //         // speed limit
-    //         double limit = 0.05;// 0.1
-    //         Vx = (Vx > limit) ? limit : Vx;
-    //         Vx = (Vx < -limit) ? -limit : Vx;
-    //         Vy = (Vy > limit) ? limit : Vy;
-    //         Vy = (Vy < -limit) ? -limit : Vy;
-
-    //         tm_msgs::SendScript srv;
-    //         srv.request.id = "demo";
-    //         srv.request.script = "SetContinueVLine(" + std::to_string(Vx) + "," + std::to_string(Vy) + ",0,0,0,0)";
-    //         if (client.call(srv))
-    //         {
-    //             if (srv.response.ok)
-    //                 ROS_INFO_STREAM("Sent script to robot: SetContinueVLine(" + std::to_string(Vx) + "," + std::to_string(Vy) + ",0,0,0,0)");
-    //             else
-    //                 ROS_WARN_STREAM("Sent script to robot , but response not yet ok ");
-    //         }
-    //         else
-    //         {
-    //             ROS_ERROR_STREAM("Error send script to robot");
-    //         }
-    //         // sendCMD("SetContinueVLine(" + std::to_string(Vx) + "," + std::to_string(Vy) + ",0,0,0,0)");
-    //     }
-    //     catch (tf::TransformException ex)
-    //     {
-    //         sendCMD("SuspendContinueVmode()");
-    //         ROS_INFO("Track pose loss...");
-    //         ros::Duration(0.1).sleep();
-    //     }
-    //     rate.sleep();
-    // }
-    // sendCMD("StopContinueVmode()");
-}
-void MainWindow::thread_TM_servoOn(const string trackName)
-{
-    // double x = 0;
-    // double y = 0;
-    // if (trackName == "/track/blue")
-    // {
-    //     x = -0.1;
-    //     y = +0.1;
-    // }
-    // QThread *thread = new QThread();
-    // ServoThreadHandle *thHandle = new ServoThreadHandle(this, trackName, x, y);
-    // thHandle->moveToThread(thread);
-    // connect(thread, &QThread::started, thHandle, &ServoThreadHandle::th_servoOn);
-    // thread->start();
-}
-
-void MainWindow::Test(int value)
-{
-    // ROS_INFO("test!!");
-    // emit cc(value);
-}
-
-void MainWindow::on_btn_set_tm_servo_trackPose_clicked()
-{
-    // thread_TM_servoOn("/track/blue");
-    QThread *thread = new QThread();
-    SubscribeThreadHandle *thHandle = new SubscribeThreadHandle(&MainWindow::TM_newServoOn, this);
-    thHandle->moveToThread(thread);
-    connect(thread, &QThread::started, thHandle, &SubscribeThreadHandle::doFunction);
-    thread->start();
-}
-void MainWindow::TM_newServoOn()
 {
     //safty check(need TF correction)
     if (!FLAG.tf_m03Robot_inVision)
@@ -1019,7 +954,7 @@ void MainWindow::TM_newServoOn()
             {
                 if (sec > 0.5)
                 {
-                    ROS_INFO("\033[0;32m[Semulation]\033[0m\033[2mLoss tracker\033[0m");
+                    ROS_INFO("\033[0;32m[Servo]\033[0m\033[2mLoss tracker\033[0m");
                     tm.sendScript("SuspendContinueVmode()", false);
                 }
                 else
@@ -1050,11 +985,73 @@ void MainWindow::TM_newServoOn()
     }
     sendCMD("StopContinueVmode()");
 }
+void MainWindow::thread_TM_servoOn(const string trackName)
+{
+    // double x = 0;
+    // double y = 0;
+    // if (trackName == "/track/blue")
+    // {
+    //     x = -0.1;
+    //     y = +0.1;
+    // }
+    // QThread *thread = new QThread();
+    // ServoThreadHandle *thHandle = new ServoThreadHandle(this, trackName, x, y);
+    // thHandle->moveToThread(thread);
+    // connect(thread, &QThread::started, thHandle, &ServoThreadHandle::th_servoOn);
+    // thread->start();
+}
+
+void MainWindow::Test(int value)
+{
+    // ROS_INFO("test!!");
+    // emit cc(value);
+}
+
+void MainWindow::on_btn_set_tm_servo_trackPose_clicked()
+{
+    // thread_TM_servoOn("/track/blue");
+    QThread *thread = new QThread();
+    SubscribeThreadHandle *thHandle = new SubscribeThreadHandle(&MainWindow::TM_newServoOn, this);
+    thHandle->moveToThread(thread);
+    connect(thread, &QThread::started, thHandle, &SubscribeThreadHandle::doFunction);
+    thread->start();
+}
+void MainWindow::TM_newServoOn()
+{
+    //safty check(need TF correction)
+    if (!FLAG.tf_m03Robot_inVision)
+    {
+        QMessageBox::about(NULL, "Error", "TF /TM_robot/base does not transform to /world");
+        return;
+    }
+    addItem(msg_tm_listModel, "=====Servoing=====\n-- servo point : track/tracker\n");
+
+    if (realMove)
+    {
+        //safty function
+        tm.sendScript("StopContinueVmode()");
+        tm.sendScript("SuspendContinueVmode()");
+        tm.sendScript("ContinueVLine(500,10000)");
+    }
+
+    tm.test_servo_mode("pose", true);
+    ros::Rate rate(3);
+    servoing = true;
+    while (nh.ok() && servoing)
+    {
+
+        tm.servo(TmPose(SERVO_NA, SERVO_NA, SERVO_NA, SERVO_NA, SERVO_NA, SERVO_NA, "mm", "deg"), 100, true);
+        rate.sleep();
+    }
+    sendCMD("StopContinueVmode()");
+}
 void MainWindow::on_btn_set_tm_servo_stop_clicked()
 {
     servoing = false;
     sendCMD("StopContinueVmode()");
     // map_sub_topic["/track/tracker/pose"].shutdown();
+
+    tm.set_servo_mode("", false);
 }
 
 /*TM- msg*/
@@ -1070,6 +1067,11 @@ void MainWindow::on_pushButton_clear_execute_clicked()
 /*TM- pose cmd*/
 void MainWindow::on_btn_set_tm_pose_clicked()
 {
+    if (FLAG.robot_space != TOOL_SPACE)
+    {
+        QMessageBox::about(NULL, "WARN", "Need in tool space");
+        return;
+    }
     double x = ui->lineEdit_tm_cmd_0->text().toDouble();
     double y = ui->lineEdit_tm_cmd_1->text().toDouble();
     double z = ui->lineEdit_tm_cmd_2->text().toDouble();
@@ -1080,6 +1082,11 @@ void MainWindow::on_btn_set_tm_pose_clicked()
 }
 void MainWindow::on_btn_set_tm_joint_clicked()
 {
+    if (FLAG.robot_space != JOINT_SPACE)
+    {
+        QMessageBox::about(NULL, "WARN", "Need in joint space");
+        return;
+    }
     double j0 = ui->lineEdit_tm_cmd_0->text().toDouble();
     double j1 = ui->lineEdit_tm_cmd_1->text().toDouble();
     double j2 = ui->lineEdit_tm_cmd_2->text().toDouble();
@@ -1096,6 +1103,7 @@ void MainWindow::on_btn_set_tm_copy_pose_clicked()
     ui->lineEdit_tm_cmd_3->setText(QString::number(tm.tcp_pose.Rx, 'd', 1));
     ui->lineEdit_tm_cmd_4->setText(QString::number(tm.tcp_pose.Ry, 'd', 1));
     ui->lineEdit_tm_cmd_5->setText(QString::number(tm.tcp_pose.Rz, 'd', 1));
+    on_radioButton_mode_pose_clicked();
 }
 void MainWindow::on_btn_set_tm_copy_joint_clicked()
 {
@@ -1105,9 +1113,302 @@ void MainWindow::on_btn_set_tm_copy_joint_clicked()
     ui->lineEdit_tm_cmd_3->setText(QString::number(tm.axis_joint.j3, 'd', 1));
     ui->lineEdit_tm_cmd_4->setText(QString::number(tm.axis_joint.j4, 'd', 1));
     ui->lineEdit_tm_cmd_5->setText(QString::number(tm.axis_joint.j5, 'd', 1));
+    on_radioButton_mode_joint_clicked();
+}
+void MainWindow::on_radioButton_mode_pose_clicked()
+{
+    ui->label_mode_pose->setText(setStringColor("Pose(mm)", "#35a653"));
+    ui->label_mode_joint->setText(setStringColor("Joint(deg)", "#707070"));
+    ui->label_text_jog->setText(setStringColor("Jog(P)", "#35a653"));
+    FLAG.robot_space = TOOL_SPACE;
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_radioButton_mode_joint_clicked()
+{
+    ui->label_mode_pose->setText(setStringColor("Pose(mm)", "#707070"));
+    ui->label_mode_joint->setText(setStringColor("Joint(deg)", "#3571a6"));
+    ui->label_text_jog->setText(setStringColor("Jog(J)", "#3571a6"));
+    FLAG.robot_space = JOINT_SPACE;
+    tm.set_jog_mode("", false);
 }
 
+/*TM- jog*/
+void MainWindow::on_btn_set_tm_x_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(jog_speed_joint / 2, 0, 0, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(jog_speed_pose, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_y_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, jog_speed_joint / 2, 0, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, jog_speed_pose, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_z_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, jog_speed_joint / 2, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, jog_speed_pose, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Rx_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, jog_speed_joint, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, 0, jog_speed_pose, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Ry_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, 0, jog_speed_joint, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, 0, 0, jog_speed_pose, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Rz_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, 0, 0, jog_speed_joint, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        ros::Duration(0.1).sleep();
+        tm.jog(TmPose(0, 0, 0, 0, 0, jog_speed_pose, "mm", "deg"), 100, true);
+    }
+}
 
+void MainWindow::on_btn_set_tm_x_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(-jog_speed_joint / 2, 0, 0, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(-jog_speed_pose, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_y_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, -jog_speed_joint / 2, 0, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, -jog_speed_pose, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_z_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, -jog_speed_joint / 2, 0, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, -jog_speed_pose, 0, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Rx_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, -jog_speed_joint, 0, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, 0, -jog_speed_pose, 0, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Ry_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, 0, -jog_speed_joint, 0, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, 0, 0, -jog_speed_pose, 0, "mm", "deg"), 100, true);
+    }
+}
+void MainWindow::on_btn_set_tm_Rz_n_pressed()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+    {
+        tm.set_jog_mode("joint", true);
+        tm.jog(TmJoint(0, 0, 0, 0, 0, -jog_speed_joint, "deg"), 100, true);
+    }
+    else if (FLAG.robot_space == TOOL_SPACE)
+    {
+        tm.set_jog_mode("pose", true);
+        tm.jog(TmPose(0, 0, 0, 0, 0, -jog_speed_pose, "mm", "deg"), 100, true);
+    }
+}
+
+void MainWindow::on_btn_set_tm_x_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_y_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_z_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Rx_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Ry_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Rz_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+
+void MainWindow::on_btn_set_tm_x_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_y_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_z_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Rx_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Ry_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+void MainWindow::on_btn_set_tm_Rz_n_released()
+{
+    if (FLAG.robot_space == JOINT_SPACE)
+        tm.jog(TmJoint(0, 0, 0, 0, 0, 0, "deg"), 100, true);
+    else if (FLAG.robot_space == TOOL_SPACE)
+        tm.jog(TmPose(0, 0, 0, 0, 0, 0, "mm", "deg"), 100, true);
+    tm.set_jog_mode("", false);
+}
+
+void MainWindow::on_btn_jog_stop_clicked()
+{
+    tm.set_jog_mode("", false);
+}
+
+void MainWindow::on_btn_servo_start_clicked()
+{
+    tm.set_servo_mode("pose", true);
+}
+void MainWindow::on_btn_servo_to_clicked()
+{
+    double x = ui->lineEdit_tm_cmd_0->text().toDouble();
+    double y = ui->lineEdit_tm_cmd_1->text().toDouble();
+    double z = ui->lineEdit_tm_cmd_2->text().toDouble();
+    double Rx = ui->lineEdit_tm_cmd_3->text().toDouble();
+    double Ry = ui->lineEdit_tm_cmd_4->text().toDouble();
+    double Rz = ui->lineEdit_tm_cmd_5->text().toDouble();
+    tm.servo(TmPose(x, y, z, SERVO_NA, SERVO_NA, SERVO_NA, "mm", "deg"), 100, true);
+}
 
 /*PTP*/
 void MainWindow::on_btn_set_tm_pos_1_clicked()
@@ -1577,7 +1878,6 @@ void MainWindow::on_comboBox_hack_voice_cmd_currentIndexChanged(int index)
     ui->textEdit_voice->setText(str);
 }
 
-
 void MainWindow::on_pushButton_ros_spin_clicked()
 {
     qApp->processEvents();
@@ -1595,7 +1895,12 @@ void MainWindow::on_pushButton_ros_spin_clicked()
     tm.moveTo(tcp1, 50, true, true);
 }
 
-
 void MainWindow::on_pushButton_test1_clicked()
 {
+    ROS_INFO("test1 button : ");
+}
+
+void MainWindow::on_pushButton_test2_clicked()
+{
+    ROS_INFO("test2 button : ");
 }

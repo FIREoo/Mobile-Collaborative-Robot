@@ -1,37 +1,18 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ui)
+project(vision_msg)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  sensor_msgs
-  geometry_msgs
-  std_msgs
-  cv_bridge
-  tm_msgs
-  image_transport
-  message_generation
-  tf
-  robot_vision #mine pkg
-  tm_helper #mine pkg
-  # vision_msg
-)
-
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
+find_package(catkin REQUIRED COMPONENTS 
+    message_generation
+    std_msgs
+    sensor_msgs
+    geometry_msgs
+    )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -68,7 +49,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  DigitLEDControl.msg
+  YoloBoundingBox.msg
+  ArUcoList.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -88,7 +70,9 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
+  std_msgs
+  sensor_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -121,11 +105,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ui
-  LIBRARIES robot_vision
-  CATKIN_DEPENDS cv_bridge image_transport roscpp rospy sensor_msgs std_msgs
-  DEPENDS system_lib
+#  INCLUDE_DIRS include
+#  LIBRARIES vision_msg
+ CATKIN_DEPENDS message_runtime std_msgs sensor_msgs geometry_msgs
+#  DEPENDS system_lib
 )
 
 ###########
@@ -135,29 +118,14 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  src/userUi
-  # robot_vision/src
-#   /opt/ros/noetic/include
-# ${OpenCV_INCLUDE_DIRS}
+# include
+# ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/testUI.cpp
+#   src/${PROJECT_NAME}/vision_msg.cpp
 # )
-# add_library(robot_vision src/robot_vision/Rotation.cpp)
-
-
-# file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui)
-# file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.qrc)
-# file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp *.h)
-
-# QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
-# QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
-# QT5_WRAP_CPP(QT_MOC_HPP ${QT_MOC})
-# file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -167,16 +135,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/testUI_node.cpp)
-add_executable(userUi
-    src/userUi/mainwindow.ui
-    src/userUi/mainwindow.cpp
-    src/userUi/main.cpp
-    src/userUi/partial_nlp.cpp
-    src/userUi/partial_M03.cpp
-    # src/userUi/tmrobot.cpp
-)
-
+# add_executable(${PROJECT_NAME}_node src/vision_msg_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -187,12 +146,63 @@ add_executable(userUi
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(userUi ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-# target_link_libraries(testUI Qt5::Widgets)
-target_link_libraries(userUi Qt5::Widgets ${catkin_LIBRARIES})
 
+#############
+## Install ##
+#############
+
+# all install targets should use catkin DESTINATION variables
+# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
+
+## Mark executable scripts (Python etc.) for installation
+## in contrast to setup.py, you can choose the destination
+# catkin_install_python(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark executables for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
+# install(TARGETS ${PROJECT_NAME}_node
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark libraries for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
+# install(TARGETS ${PROJECT_NAME}
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+# )
+
+## Mark cpp header files for installation
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
+
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
+
+#############
+## Testing ##
+#############
+
+## Add gtest based cpp test target and link libraries
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_vision_msg.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
+
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)

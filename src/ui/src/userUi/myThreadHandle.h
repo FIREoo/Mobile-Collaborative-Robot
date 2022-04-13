@@ -23,6 +23,7 @@ class SubscribeThreadHandle : public QObject
     SubscribeThreadHandle(void (MainWindow::*pFunc)(), MainWindow *obj);
     SubscribeThreadHandle(void (MainWindow::*pFunc)(double, double), double v0, double v1, MainWindow *obj);
     SubscribeThreadHandle(void (MainWindow::*pFunc)(std::string, double, double), std::string s0, double v0, double v1, MainWindow *obj);
+    SubscribeThreadHandle(void (MainWindow::*pFunc)(double, double, double, double, double, double), double v0, double v1, double v2, double v3, double v4, double v5, MainWindow *obj);
     // template<typename A, typename B, typename C>
     // SubscribeThreadHandle(void (MainWindow::*pFunc)(A, B, C), A v0, B v1, C v2, MainWindow *obj);
     ros::SubscribeOptions ops;
@@ -32,6 +33,7 @@ class SubscribeThreadHandle : public QObject
     void doFunction();
     void doFunction2();
     void doFunction3();
+    void doFunction6();
 
   private:
     MainWindow *_obj;
@@ -39,12 +41,17 @@ class SubscribeThreadHandle : public QObject
     std::string S0;
     double V0;
     double V1;
+    double V2;
+    double V3;
+    double V4;
+    double V5;
 
 
     void (MainWindow::*_pFunc)();
 
     void (MainWindow::*_pFunc2)(double, double);
     void (MainWindow::*_pFunc3)(std::string, double, double);
+    void (MainWindow::*_pFunc6)(double, double, double, double, double, double);
 };
 
 #endif// MYTHREADHANDLE_H

@@ -1,4 +1,4 @@
-#include "tm_msgs/FeedbackState.h"
+// #include "tm_msgs/FeedbackState.h"
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
 #include <robot_vision/PoseTrans.h>//service
@@ -60,7 +60,7 @@ void setStaticTF2()
     static_transformStamped.child_frame_id = "TM_robot/tcp/aruco";
     static_transformStamped.transform.translation.x = 0;
     static_transformStamped.transform.translation.y = 0;
-    static_transformStamped.transform.translation.z = 0.1;
+    static_transformStamped.transform.translation.z = -0.1;
     tf2::Quaternion quat;
     quat.setRPY(M_PI_2, 0, M_PI);
     static_transformStamped.transform.rotation.x = quat.x();

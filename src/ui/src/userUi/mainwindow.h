@@ -36,8 +36,9 @@
 #include <robot_vision/PoseTrans.h>//service
 #include <ui/DigitLEDControl.h>
 
+#include <tm_helper/tmrobot.h>
 // #include "myThreadHandle.h"
-#include "tmrobot.h"
+// #include "tmrobot.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -51,6 +52,9 @@ namespace Ui
     class MainWindow;
 }
 
+#define JOINT_SPACE 0
+#define TOOL_SPACE 1
+
 class Flags
 {
   public:
@@ -63,6 +67,8 @@ class Flags
     bool saveImage2;
     bool saveImage3;
     bool saveImage4;
+
+    int robot_space;
 };
 
 class MainWindow : public QMainWindow
@@ -114,6 +120,12 @@ class MainWindow : public QMainWindow
 
 
     std::map<string, ros::Subscriber> map_sub_topic;//@subscriber map
+
+    ros::Publisher pub_jog_cmd;
+    //jog speed
+    double jog_speed_percent = 100;
+    double jog_speed_pose = 10;
+    double jog_speed_joint = 10;
 
   private slots:
     // void on_pushButton_clicked();
@@ -188,7 +200,7 @@ class MainWindow : public QMainWindow
     /*test function*/
     void on_pushButton_ros_spin_clicked();
     void on_pushButton_test1_clicked();
-
+    void on_pushButton_test2_clicked();
 
 
 
@@ -220,7 +232,46 @@ class MainWindow : public QMainWindow
 
     void on_pushButton_tf_br_NE_clicked();
 
-  private:
+    void on_radioButton_mode_pose_clicked();
+
+    void on_radioButton_mode_joint_clicked();
+
+    /*TM -jog*/
+    void on_btn_set_tm_x_pressed();
+    void on_btn_set_tm_y_pressed();
+    void on_btn_set_tm_z_pressed();
+    void on_btn_set_tm_Rx_pressed();
+    void on_btn_set_tm_Ry_pressed();
+    void on_btn_set_tm_Rz_pressed();
+    void on_btn_set_tm_x_n_pressed();
+    void on_btn_set_tm_y_n_pressed();
+    void on_btn_set_tm_z_n_pressed();
+    void on_btn_set_tm_Rx_n_pressed();
+    void on_btn_set_tm_Ry_n_pressed();
+    void on_btn_set_tm_Rz_n_pressed();
+    void on_btn_set_tm_x_released();
+    void on_btn_set_tm_y_released();
+    void on_btn_set_tm_z_released();
+    void on_btn_set_tm_Rx_released();
+    void on_btn_set_tm_Ry_released();
+    void on_btn_set_tm_Rz_released();
+    void on_btn_set_tm_x_n_released();
+    void on_btn_set_tm_y_n_released();
+    void on_btn_set_tm_z_n_released();
+    void on_btn_set_tm_Rx_n_released();
+    void on_btn_set_tm_Ry_n_released();
+    void on_btn_set_tm_Rz_n_released();
+    void on_btn_jog_stop_clicked();
+
+    void on_btn_servo_start_clicked();
+    void on_btn_servo_to_clicked();
+    /*****/
+
+
+
+
+
+private:
     Ui::MainWindow *ui;
     QStandardItemModel *nlp_itemModel = new QStandardItemModel();
     QStringListModel *msg_listModel = new QStringListModel();
